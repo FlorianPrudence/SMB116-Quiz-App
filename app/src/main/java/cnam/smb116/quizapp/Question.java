@@ -1,6 +1,11 @@
 package cnam.smb116.quizapp;
 
-public class Question {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
+public class Question implements Parcelable {
     private String question;
     private String option1;
     private String option2;
@@ -20,6 +25,27 @@ public class Question {
         this.option4 = option4;
         this.correctAnswer = correctAnswer;
     }
+
+    protected Question(Parcel in) {
+        question = in.readString();
+        option1 = in.readString();
+        option2 = in.readString();
+        option3 = in.readString();
+        option4 = in.readString();
+        correctAnswer = in.readInt();
+    }
+
+    public static final Creator<Question> CREATOR = new Creator<Question>() {
+        @Override
+        public Question createFromParcel(Parcel in) {
+            return new Question(in);
+        }
+
+        @Override
+        public Question[] newArray(int size) {
+            return new Question[size];
+        }
+    };
 
     public String getQuestion() {
         return question;
@@ -67,5 +93,20 @@ public class Question {
 
     public void setCorrectAnswer(int correctAnswer) {
         this.correctAnswer = correctAnswer;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel parcel, int i) {
+        parcel.writeString(question);
+        parcel.writeString(option1);
+        parcel.writeString(option2);
+        parcel.writeString(option3);
+        parcel.writeString(option4);
+        parcel.writeInt(correctAnswer);
     }
 }
