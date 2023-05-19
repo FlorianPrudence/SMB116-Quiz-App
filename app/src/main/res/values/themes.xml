@@ -13,9 +13,10 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
-    <style name="Theme.QuizApp.NoActionBar">
+    <style name="Theme.QuizApp.NoActionBar" parent="Theme.QuizApp">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:windowFullscreen">false</item>
     </style>
     <style name="Theme.QuizApp.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="Theme.QuizApp.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />

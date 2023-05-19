@@ -9,12 +9,13 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Locale;
 
 public class QuizActivity extends AppCompatActivity {
@@ -32,7 +33,11 @@ public class QuizActivity extends AppCompatActivity {
     private TextView textViewQuestionCount;
     private TextView textViewCountDown;
 
-    private Button btnAnswer1, btnAnswer2, btnAnswer3, btnAnswer4, btnNext;
+    private Button btnAnswer1, btnAnswer2, btnAnswer3, btnAnswer4, btnAnswerText, btnNext;
+
+    private EditText textAnswer;
+
+    private RelativeLayout btnAnswerLayout, textAnswerLayout;
 
     private ColorStateList textColorDefaultBtn;
     private ColorStateList textColorDefaultCd;
@@ -50,6 +55,8 @@ public class QuizActivity extends AppCompatActivity {
 
     private long backPressedTime;
 
+    private String answer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,12 +66,17 @@ public class QuizActivity extends AppCompatActivity {
         textViewScore = findViewById(R.id.text_view_score);
         textViewQuestionCount = findViewById(R.id.text_view_question_count);
         textViewCountDown = findViewById(R.id.text_view_countdown);
+        textAnswer = findViewById(R.id.edit_text_answer);
 
         btnAnswer1 = findViewById(R.id.button_answer1);
         btnAnswer2 = findViewById(R.id.button_answer2);
         btnAnswer3 = findViewById(R.id.button_answer3);
         btnAnswer4 = findViewById(R.id.button_answer4);
+        btnAnswerText = findViewById(R.id.button_text_answer);
         btnNext = findViewById(R.id.button_next);
+
+        btnAnswerLayout = findViewById(R.id.layout_btn_answer);
+        textAnswerLayout = findViewById(R.id.layout_text_answer);
 
         textColorDefaultBtn = btnAnswer1.getTextColors();
         textColorDefaultCd = textViewCountDown.getTextColors();
@@ -96,25 +108,40 @@ public class QuizActivity extends AppCompatActivity {
         btnAnswer1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkAnswer(1);
+                answer = "1";
+                checkAnswer();
             }
         });
         btnAnswer2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkAnswer(2);
+                answer = "2";
+                checkAnswer();
             }
         });
         btnAnswer3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkAnswer(3);
+                answer = "3";
+                checkAnswer();
             }
         });
         btnAnswer4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkAnswer(4);
+                answer = "4";
+                checkAnswer();
+            }
+        });
+        btnAnswerText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(answered)
+                    showNextQuestion();
+                else {
+                    answer = textAnswer.getText().toString().trim();
+                    checkAnswer();
+                }
             }
         });
         btnNext.setOnClickListener(new View.OnClickListener() {
@@ -131,11 +158,26 @@ public class QuizActivity extends AppCompatActivity {
         btnAnswer2.setTextColor(textColorDefaultBtn);
         btnAnswer3.setTextColor(textColorDefaultBtn);
         btnAnswer4.setTextColor(textColorDefaultBtn);
+        textAnswer.setTextColor(textColorDefaultCd);
+        textAnswer.getText().clear();
 
         if (questionCounter < questionCountTotal) {
             currentQuestion = questionList.get(questionCounter);
 
             textViewQuestion.setText(currentQuestion.getQuestion());
+
+            switch (currentQuestion.getType()) {
+                case Text:
+                    btnAnswerLayout.setVisibility(View.INVISIBLE);
+                    textAnswerLayout.setVisibility(View.VISIBLE);
+                    btnAnswerText.setText("Confirmer");
+                    break;
+                case MultipleChoices:
+                    btnAnswerLayout.setVisibility(View.VISIBLE);
+                    textAnswerLayout.setVisibility(View.INVISIBLE);
+                    break;
+            }
+
             btnAnswer1.setText(currentQuestion.getOption1());
             btnAnswer2.setText(currentQuestion.getOption2());
             btnAnswer3.setText(currentQuestion.getOption3());
@@ -164,7 +206,7 @@ public class QuizActivity extends AppCompatActivity {
             public void onFinish() {
                 timeLeftInMillis = 0;
                 updateCountDownText();
-                checkAnswer(-1);
+                checkAnswer();
             }
         }.start();
     }
@@ -184,49 +226,58 @@ public class QuizActivity extends AppCompatActivity {
         }
     }
 
-    private void checkAnswer(int index) {
+    private void checkAnswer() {
         answered = true;
         countDownTimer.cancel();
 
-        if (index == currentQuestion.getCorrectAnswer()) {
+        if (answer != null && answer.equalsIgnoreCase(currentQuestion.getCorrectAnswer())) {
             score++;
             textViewScore.setText("Score: " + score);
         }
-
         showSolution();
     }
 
     private void showSolution() {
-        btnAnswer1.setTextColor(Color.RED);
-        btnAnswer2.setTextColor(Color.RED);
-        btnAnswer3.setTextColor(Color.RED);
-        btnAnswer4.setTextColor(Color.RED);
+        String correctAnswer = currentQuestion.getCorrectAnswer();
 
-        switch (currentQuestion.getCorrectAnswer()) {
-            case 1:
-                btnAnswer1.setTextColor(Color.GREEN);
-                textViewQuestion.setText("Answer 1 is correct");
+        switch (currentQuestion.getType()) {
+            case Text:
+                if(answer.equalsIgnoreCase(currentQuestion.getCorrectAnswer())) {
+                    textAnswer.setTextColor(Color.GREEN);
+                } else {
+                    textAnswer.setTextColor(Color.RED);
+                    textAnswer.setText(correctAnswer);
+                }
+                if (questionCounter < questionCountTotal)
+                    btnAnswerText.setText("Next");
+                else
+                    btnAnswerText.setText("Finish");
                 break;
-            case 2:
-                btnAnswer2.setTextColor(Color.GREEN);
-                textViewQuestion.setText("Answer 2 is correct");
+            case MultipleChoices:
+                btnAnswer1.setTextColor(Color.RED);
+                btnAnswer2.setTextColor(Color.RED);
+                btnAnswer3.setTextColor(Color.RED);
+                btnAnswer4.setTextColor(Color.RED);
+                switch (currentQuestion.getCorrectAnswer()) {
+                    case "1":
+                        btnAnswer1.setTextColor(Color.GREEN);
+                        break;
+                    case "2":
+                        btnAnswer2.setTextColor(Color.GREEN);
+                        break;
+                    case "3":
+                        btnAnswer3.setTextColor(Color.GREEN);
+                        break;
+                    case "4":
+                        btnAnswer4.setTextColor(Color.GREEN);
+                        break;
+                }
+                if (questionCounter < questionCountTotal)
+                    btnNext.setText("Next");
+                else
+                    btnNext.setText("Finish");
+                btnNext.setVisibility(View.VISIBLE);
                 break;
-            case 3:
-                btnAnswer3.setTextColor(Color.GREEN);
-                textViewQuestion.setText("Answer 3 is correct");
-                break;
-            case 4:
-                btnAnswer4.setTextColor(Color.GREEN);
-                textViewQuestion.setText("Answer 4 is correct");
-                break;
-        }
-
-        if (questionCounter < questionCountTotal) {
-            btnNext.setVisibility(View.VISIBLE);
-            btnNext.setText("Next");
-        } else {
-            btnNext.setVisibility(View.VISIBLE);
-            btnNext.setText("Finish");
         }
     }
 

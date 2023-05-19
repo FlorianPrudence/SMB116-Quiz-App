@@ -60,8 +60,8 @@ public class MainActivity extends AppCompatActivity {
         textViewHighscore.setText("Highscore: " + highscore);
     }
 
-    private void updateHighscore(int highscoreNew) {
-        highscore = highscoreNew;
+    private void updateHighscore(int newHighscore) {
+        highscore = newHighscore;
         textViewHighscore.setText("Highscore: " + highscore);
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);

@@ -7,18 +7,32 @@ import androidx.annotation.NonNull;
 
 public class Question implements Parcelable {
     private String question;
+    private QuestionType type;
     private String option1;
     private String option2;
     private String option3;
-
     private String option4;
-    private int correctAnswer;
+    private String correctAnswer;
 
     public Question() {
     }
 
-    public Question(String question, String option1, String option2, String option3, String option4, int correctAnswer) {
+    public enum QuestionType {
+        MultipleChoices,
+        Text
+    }
+
+    public QuestionType getType() {
+        return type;
+    }
+
+    public void setType(QuestionType type) {
+        this.type = type;
+    }
+
+    public Question(String question, QuestionType type, String option1, String option2, String option3, String option4, String correctAnswer) {
         this.question = question;
+        this.type = type;
         this.option1 = option1;
         this.option2 = option2;
         this.option3 = option3;
@@ -28,11 +42,12 @@ public class Question implements Parcelable {
 
     protected Question(Parcel in) {
         question = in.readString();
+        type = QuestionType.valueOf(in.readString());
         option1 = in.readString();
         option2 = in.readString();
         option3 = in.readString();
         option4 = in.readString();
-        correctAnswer = in.readInt();
+        correctAnswer = in.readString();
     }
 
     public static final Creator<Question> CREATOR = new Creator<Question>() {
@@ -87,11 +102,11 @@ public class Question implements Parcelable {
         this.option4 = option4;
     }
 
-    public int getCorrectAnswer() {
+    public String getCorrectAnswer() {
         return correctAnswer;
     }
 
-    public void setCorrectAnswer(int correctAnswer) {
+    public void setCorrectAnswer(String correctAnswer) {
         this.correctAnswer = correctAnswer;
     }
 
@@ -103,10 +118,11 @@ public class Question implements Parcelable {
     @Override
     public void writeToParcel(@NonNull Parcel parcel, int i) {
         parcel.writeString(question);
+        parcel.writeString(type.name());
         parcel.writeString(option1);
         parcel.writeString(option2);
         parcel.writeString(option3);
         parcel.writeString(option4);
-        parcel.writeInt(correctAnswer);
+        parcel.writeString(correctAnswer);
     }
 }

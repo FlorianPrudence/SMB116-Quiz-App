@@ -8,18 +8,20 @@
     tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/text_view_appName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="32dp"
         android:text="Quiz App"
-        android:textSize="35sp" />
+        android:textSize="36sp" />
 
     <TextView
         android:id="@+id/text_view_highscore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@id/button_start_quiz"
+        android:layout_below="@id/text_view_appName"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="32dp"
         android:text="Highscore: 0"
@@ -29,7 +31,8 @@
         android:id="@+id/button_start_quiz"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/text_view_highscore"
         android:text="Start Quiz" />
 
 </RelativeLayout>
