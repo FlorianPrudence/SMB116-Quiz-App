@@ -48,6 +48,7 @@ public class QuizActivity extends AppCompatActivity {
     private Question currentQuestion;
     private boolean answered;
     private String answer;
+    private QuizDBHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +75,7 @@ public class QuizActivity extends AppCompatActivity {
         textColorDefaultCd = textViewCountDown.getTextColors();
 
         if (savedInstanceState == null) {
-            QuestionDBHelper dbHelper = new QuestionDBHelper(this);
+            dbHelper = new QuizDBHelper(this);
             questionCountTotal = getIntent().getIntExtra(QUESTION_QTY, dbHelper.countAllQuestions());
             questionList = dbHelper.getAllQuestions();
             Collections.shuffle(questionList);
@@ -296,8 +297,11 @@ public class QuizActivity extends AppCompatActivity {
     }
 
     private void finishQuiz() {
+        dbHelper.insertResult(score, questionCountTotal);
+
         Intent resultIntent = new Intent();
-        resultIntent.putExtra(EXTRA_SCORE, score);
+        if(questionCountTotal == 40)
+            resultIntent.putExtra(EXTRA_SCORE, score);
         setResult(RESULT_OK, resultIntent);
         finish();
     }

@@ -24,7 +24,7 @@
         android:layout_below="@id/text_view_appName"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="32dp"
-        android:text="Highscore: 0"
+        android:text="Meilleur score test complet: 0"
         android:textSize="20sp" />
 
     <EditText
@@ -45,6 +45,15 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/edit_text_question_qty"
+        android:layout_marginBottom="32dp"
         android:text="Start Quiz" />
+
+    <Button
+        android:id="@+id/button_see_results"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/button_start_quiz"
+        android:text="Voir les précédents résultats" />
 
 </RelativeLayout>

@@ -11,13 +11,13 @@ import java.util.ArrayList;
 
 import cnam.smb116.quizapp.QuestionContract.QuestionsTable;
 
-public class QuestionDBHelper extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME = "QuizApp.db";
-    private static final int DATABASE_VERSION = 6;
+public class QuizDBHelper extends SQLiteOpenHelper {
+    protected static final String DATABASE_NAME = "QuizApp.db";
+    protected static final int DATABASE_VERSION = 9;
 
     private SQLiteDatabase db;
 
-    public QuestionDBHelper(Context context) {
+    public QuizDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -38,13 +38,23 @@ public class QuestionDBHelper extends SQLiteOpenHelper {
                 QuestionsTable.COLUMN_EXPLANATION + " TEXT" +
                 ")";
 
+        final String SQL_CREATE_RESULTS_TABLE = "CREATE TABLE " +
+                ResultContract.ResultTable.TABLE_NAME + " ( " +
+                ResultContract.ResultTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                ResultContract.ResultTable.COLUMN_TIME + " INTEGER, " +
+                ResultContract.ResultTable.COLUMN_CORRECT_ANSWERS + " TEXT, " +
+                ResultContract.ResultTable.COLUMN_TOTAL_QUESTIONS + " TEXT " +
+                ")";
+
         db.execSQL(SQL_CREATE_QUESTIONS_TABLE);
+        db.execSQL(SQL_CREATE_RESULTS_TABLE);
         fillQuestionsTable();
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + QuestionContract.QuestionsTable.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + ResultContract.ResultTable.TABLE_NAME);
         onCreate(db);
     }
 
@@ -112,5 +122,33 @@ public class QuestionDBHelper extends SQLiteOpenHelper {
 
         c.close();
         return questionList;
+    }
+
+    public long insertResult(int correctAnswers, int totalQuestions) {
+        ContentValues values = new ContentValues();
+        values.put(ResultContract.ResultTable.COLUMN_TIME, System.currentTimeMillis());
+        values.put(ResultContract.ResultTable.COLUMN_CORRECT_ANSWERS, correctAnswers);
+        values.put(ResultContract.ResultTable.COLUMN_TOTAL_QUESTIONS, totalQuestions);
+        return db.insert(ResultContract.ResultTable.TABLE_NAME, null, values);
+    }
+
+    @SuppressLint("Range")
+    public ArrayList<Result> getAllResult() {
+        ArrayList<Result> resultList = new ArrayList<>();
+        db = getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT * FROM " + ResultContract.ResultTable.TABLE_NAME + " ORDER BY " + ResultContract.ResultTable.COLUMN_TIME + " DESC", null);
+
+        if (c.moveToFirst()) {
+            do {
+                Result result = new Result();
+                result.setTime(c.getLong(c.getColumnIndex(ResultContract.ResultTable.COLUMN_TIME)));
+                result.setCorrectAnswers(c.getInt(c.getColumnIndex(ResultContract.ResultTable.COLUMN_CORRECT_ANSWERS)));
+                result.setTotalQuestions(c.getInt(c.getColumnIndex(ResultContract.ResultTable.COLUMN_TOTAL_QUESTIONS)));
+                resultList.add(result);
+            } while (c.moveToNext());
+        }
+
+        c.close();
+        return resultList;
     }
 }

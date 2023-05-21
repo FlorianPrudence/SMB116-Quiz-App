@@ -4,7 +4,6 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -34,9 +33,10 @@ public class MainActivity extends AppCompatActivity {
         loadHighscore();
 
         Button buttonStartQuiz = findViewById(R.id.button_start_quiz);
+        Button buttonSeeResults = findViewById(R.id.button_see_results);
         EditText editTextQuestionQty = findViewById(R.id.edit_text_question_qty);
 
-        QuestionDBHelper dbHelper = new QuestionDBHelper(this);
+        QuizDBHelper dbHelper = new QuizDBHelper(this);
         questionCount = dbHelper.countAllQuestions();
         editTextQuestionQty.setFilters( new InputFilter[]{ new MinMaxFilter( "1" , String.valueOf(questionCount))});
         editTextQuestionQty.setHint(editTextQuestionQty.getHint() + " (Max : " + questionCount + ")");
@@ -53,6 +53,13 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        buttonSeeResults.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ResultActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void startQuiz(int questionQty) {
@@ -67,8 +74,8 @@ public class MainActivity extends AppCompatActivity {
                 if (result.getResultCode() == RESULT_OK) {
                     Intent data = result.getData();
                     if(data != null) {
-                        int score = data.getIntExtra(QuizActivity.EXTRA_SCORE, 0);
-                        if (score > highscore) {
+                        int score = data.getIntExtra(QuizActivity.EXTRA_SCORE, -1);
+                        if (score > -1 && score > highscore) {
                             updateHighscore(score);
                         }
                     }
