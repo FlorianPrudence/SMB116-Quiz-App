@@ -13,7 +13,7 @@ import cnam.smb116.quizapp.QuestionContract.QuestionsTable;
 
 public class QuestionDBHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "QuizApp.db";
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 6;
 
     private SQLiteDatabase db;
 
@@ -34,7 +34,8 @@ public class QuestionDBHelper extends SQLiteOpenHelper {
                 QuestionsTable.COLUMN_OPTION2 + " TEXT, " +
                 QuestionsTable.COLUMN_OPTION3 + " TEXT, " +
                 QuestionsTable.COLUMN_OPTION4 + " TEXT, " +
-                QuestionsTable.COLUMN_CORRECT_ANSWER + " TEXT" +
+                QuestionsTable.COLUMN_CORRECT_ANSWER + " TEXT," +
+                QuestionsTable.COLUMN_EXPLANATION + " TEXT" +
                 ")";
 
         db.execSQL(SQL_CREATE_QUESTIONS_TABLE);
@@ -48,21 +49,21 @@ public class QuestionDBHelper extends SQLiteOpenHelper {
     }
 
     private void fillQuestionsTable() {
-        Question q1 = new Question("A is correct", Question.QuestionType.MultipleChoices, "A", "B", "C","D", "1");
+        Question q1 = new Question("A is correct", Question.QuestionType.MultipleChoices, "A", "B", "C","D", "1", "Parce que");
         addQuestion(q1);
-        Question q2 = new Question("B is correct", Question.QuestionType.MultipleChoices, "A", "B", "C","D", "2");
+        Question q2 = new Question("B is correct", Question.QuestionType.MultipleChoices, "A", "B", "C","D", "2", "Parce que");
         addQuestion(q2);
-        Question q3 = new Question("C is correct", Question.QuestionType.MultipleChoices, "A", "B", "C","D", "3");
+        Question q3 = new Question("C is correct", Question.QuestionType.MultipleChoices, "A", "B", "C","D", "3", "Parce que");
         addQuestion(q3);
-        Question q4 = new Question("D is correct", Question.QuestionType.MultipleChoices, "A", "B", "C","D", "4");
+        Question q4 = new Question("D is correct", Question.QuestionType.MultipleChoices, "A", "B", "C","D", "4", "Parce que");
         addQuestion(q4);
-        Question q5 = new Question("B is correct again", Question.QuestionType.MultipleChoices, "A", "B", "C","D", "2");
+        Question q5 = new Question("B is correct again", Question.QuestionType.MultipleChoices, "A", "B", "C","D", "2", "Parce que");
         addQuestion(q5);
-        Question q6 = new Question("Quelle est la couleur du cheval blanc d'Henri IV ?", Question.QuestionType.Text, null, null, null,null, "Blanc");
+        Question q6 = new Question("Quelle est la couleur du cheval blanc d'Henri IV ?", Question.QuestionType.Text, null, null, null,null, "Blanc", "Parce que");
         addQuestion(q6);
-        Question q7 = new Question("Comment s'appelle l'alcool japonais à base de prunes ?", Question.QuestionType.Text, null, null, null,null, "Umeshu");
+        Question q7 = new Question("Comment s'appelle l'alcool japonais à base de prunes ?", Question.QuestionType.Text, null, null, null,null, "Umeshu", "Parce que");
         addQuestion(q7);
-        Question q8 = new Question("Qui a composé la Vème Symphonie ?", Question.QuestionType.Text, null, null, null,null, "Beethoven");
+        Question q8 = new Question("Qui a composé la Vème Symphonie ?", Question.QuestionType.Text, null, null, null,null, "Beethoven", "Parce que");
         addQuestion(q8);
     }
 
@@ -75,7 +76,17 @@ public class QuestionDBHelper extends SQLiteOpenHelper {
         cv.put(QuestionsTable.COLUMN_OPTION3, question.getOption3());
         cv.put(QuestionsTable.COLUMN_OPTION4, question.getOption4());
         cv.put(QuestionsTable.COLUMN_CORRECT_ANSWER, question.getCorrectAnswer());
+        cv.put(QuestionsTable.COLUMN_EXPLANATION, question.getExplanation());
         db.insert(QuestionsTable.TABLE_NAME, null, cv);
+    }
+
+    public int countAllQuestions() {
+        db = getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT COUNT(*) FROM " + QuestionsTable.TABLE_NAME, null);
+        c.moveToFirst();
+        int count = c.getInt(0);
+        c.close();
+        return count;
     }
 
     @SuppressLint("Range")
@@ -94,6 +105,7 @@ public class QuestionDBHelper extends SQLiteOpenHelper {
                 question.setOption3(c.getString(c.getColumnIndex(QuestionsTable.COLUMN_OPTION3)));
                 question.setOption4(c.getString(c.getColumnIndex(QuestionsTable.COLUMN_OPTION4)));
                 question.setCorrectAnswer(c.getString(c.getColumnIndex(QuestionsTable.COLUMN_CORRECT_ANSWER)));
+                question.setExplanation(c.getString(c.getColumnIndex(QuestionsTable.COLUMN_EXPLANATION)));
                 questionList.add(question);
             } while (c.moveToNext());
         }

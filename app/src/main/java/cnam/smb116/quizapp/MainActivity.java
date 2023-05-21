@@ -9,14 +9,21 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.InputFilter;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     public static final String KEY_HIGHSCORE = "quizzHighScore";
+
+    public static final String QUESTION_QTY = "quizzQuestionQty";
     private TextView textViewHighscore;
     private int highscore;
+
+    private int questionCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,16 +34,30 @@ public class MainActivity extends AppCompatActivity {
         loadHighscore();
 
         Button buttonStartQuiz = findViewById(R.id.button_start_quiz);
+        EditText editTextQuestionQty = findViewById(R.id.edit_text_question_qty);
+
+        QuestionDBHelper dbHelper = new QuestionDBHelper(this);
+        questionCount = dbHelper.countAllQuestions();
+        editTextQuestionQty.setFilters( new InputFilter[]{ new MinMaxFilter( "1" , String.valueOf(questionCount))});
+        editTextQuestionQty.setHint(editTextQuestionQty.getHint() + " (Max : " + questionCount + ")");
+
         buttonStartQuiz.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startQuiz();
+                if(editTextQuestionQty.getText().length() > 0) {
+                    int questionQty = Integer.parseInt(editTextQuestionQty.getText().toString());
+                    Toast.makeText(MainActivity.this, "Nombre de questions : " + questionQty, Toast.LENGTH_SHORT).show();
+                    startQuiz(questionQty);
+                } else {
+                    Toast.makeText(MainActivity.this, "Veuillez saisir un nombre de question valide", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
 
-    private void startQuiz() {
+    private void startQuiz(int questionQty) {
         Intent intent = new Intent(MainActivity.this, QuizActivity.class);
+        intent.putExtra(QUESTION_QTY, questionQty);
         QuizzActivityResult.launch(intent);
     }
 

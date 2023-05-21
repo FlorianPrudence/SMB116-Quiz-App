@@ -16,5 +16,6 @@ public final class QuestionContract {
         public static final String COLUMN_OPTION3 = "option3";
         public static final String COLUMN_OPTION4 = "option4";
         public static final String COLUMN_CORRECT_ANSWER = "correct_answer";
+        public static final String COLUMN_EXPLANATION = "explanation";
     }
 }

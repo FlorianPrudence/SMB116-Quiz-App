@@ -27,12 +27,24 @@
         android:text="Highscore: 0"
         android:textSize="20sp" />
 
+    <EditText
+        android:id="@+id/edit_text_question_qty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/text_view_highscore"
+        android:textSize="20sp"
+        android:hint="Nombre de questions">
+
+    </EditText>
+
     <Button
         android:id="@+id/button_start_quiz"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/text_view_highscore"
+        android:layout_below="@id/edit_text_question_qty"
         android:text="Start Quiz" />
 
 </RelativeLayout>

@@ -13,6 +13,7 @@ public class Question implements Parcelable {
     private String option3;
     private String option4;
     private String correctAnswer;
+    private String explanation;
 
     public Question() {
     }
@@ -22,15 +23,7 @@ public class Question implements Parcelable {
         Text
     }
 
-    public QuestionType getType() {
-        return type;
-    }
-
-    public void setType(QuestionType type) {
-        this.type = type;
-    }
-
-    public Question(String question, QuestionType type, String option1, String option2, String option3, String option4, String correctAnswer) {
+    public Question(String question, QuestionType type, String option1, String option2, String option3, String option4, String correctAnswer, String explanation) {
         this.question = question;
         this.type = type;
         this.option1 = option1;
@@ -38,6 +31,7 @@ public class Question implements Parcelable {
         this.option3 = option3;
         this.option4 = option4;
         this.correctAnswer = correctAnswer;
+        this.explanation = explanation;
     }
 
     protected Question(Parcel in) {
@@ -48,6 +42,7 @@ public class Question implements Parcelable {
         option3 = in.readString();
         option4 = in.readString();
         correctAnswer = in.readString();
+        explanation = in.readString();
     }
 
     public static final Creator<Question> CREATOR = new Creator<Question>() {
@@ -68,6 +63,22 @@ public class Question implements Parcelable {
 
     public void setQuestion(String question) {
         this.question = question;
+    }
+
+    public String getExplanation() {
+        return explanation;
+    }
+
+    public void setExplanation(String explanation) {
+        this.explanation = explanation;
+    }
+
+    public QuestionType getType() {
+        return type;
+    }
+
+    public void setType(QuestionType type) {
+        this.type = type;
     }
 
     public String getOption1() {
@@ -124,5 +135,6 @@ public class Question implements Parcelable {
         parcel.writeString(option3);
         parcel.writeString(option4);
         parcel.writeString(correctAnswer);
+        parcel.writeString(explanation);
     }
 }
