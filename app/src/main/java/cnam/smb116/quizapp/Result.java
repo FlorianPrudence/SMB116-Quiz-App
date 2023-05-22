@@ -82,7 +82,7 @@ public class Result implements Parcelable {
     @Override
     public String toString() {
         DateFormat df = getDateTimeInstance();
-        Date resultdate = new Date(time);
-        return df.format(resultdate) + " : " + correctAnswers + "/" + totalQuestions;
+        Date resultDate = new Date(time);
+        return df.format(resultDate) + "\nScore : " + correctAnswers + "/" + totalQuestions;
     }
 }

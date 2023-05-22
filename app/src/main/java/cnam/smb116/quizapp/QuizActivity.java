@@ -105,7 +105,7 @@ public class QuizActivity extends AppCompatActivity {
             if (!answered) {
                 startCountDown();
             } else {
-                btnAnswerText.setText("Next");
+                btnAnswerText.setText("Question suivante");
                 updateCountDownText();
                 showSolution();
             }
@@ -269,9 +269,9 @@ public class QuizActivity extends AppCompatActivity {
                     textAnswer.setText(correctAnswer);
                 }
                 if (questionCounter < questionCountTotal)
-                    btnAnswerText.setText("Next");
+                    btnAnswerText.setText("Question suivante");
                 else
-                    btnAnswerText.setText("Finish");
+                    btnAnswerText.setText("Terminer");
                 break;
             case MultipleChoices:
                 btnAnswer1.setTextColor(Color.RED);
@@ -312,7 +312,7 @@ public class QuizActivity extends AppCompatActivity {
             setResult(RESULT_CANCELED);
             finish();
         } else {
-            Toast.makeText(this, "Press back again to finish", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Appuyez à nouveau sur retour pour quitter", Toast.LENGTH_SHORT).show();
         }
 
         backPressedTime = System.currentTimeMillis();
