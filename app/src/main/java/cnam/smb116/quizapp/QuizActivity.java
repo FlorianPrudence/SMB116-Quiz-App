@@ -96,7 +96,7 @@ public class QuizActivity extends AppCompatActivity {
                     textAnswer.setInputType(InputType.TYPE_CLASS_TEXT);
                     btnAnswerText.setText("Confirmer");
                     break;
-                case MultipleChoices:
+                case SingleChoice:
                     btnAnswerLayout.setVisibility(View.VISIBLE);
                     textAnswerLayout.setVisibility(View.INVISIBLE);
                     break;
@@ -191,7 +191,7 @@ public class QuizActivity extends AppCompatActivity {
                     textAnswer.setInputType(InputType.TYPE_CLASS_TEXT);
                     btnAnswerText.setText("Confirmer");
                     break;
-                case MultipleChoices:
+                case SingleChoice:
                     btnAnswerLayout.setVisibility(View.VISIBLE);
                     textAnswerLayout.setVisibility(View.INVISIBLE);
                     break;
@@ -273,7 +273,7 @@ public class QuizActivity extends AppCompatActivity {
                 else
                     btnAnswerText.setText("Terminer");
                 break;
-            case MultipleChoices:
+            case SingleChoice:
                 btnAnswer1.setTextColor(Color.RED);
                 btnAnswer2.setTextColor(Color.RED);
                 btnAnswer3.setTextColor(Color.RED);

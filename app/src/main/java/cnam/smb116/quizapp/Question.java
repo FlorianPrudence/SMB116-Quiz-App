@@ -19,7 +19,8 @@ public class Question implements Parcelable {
     }
 
     public enum QuestionType {
-        MultipleChoices,
+        SingleChoice,
+
         Text
     }
 

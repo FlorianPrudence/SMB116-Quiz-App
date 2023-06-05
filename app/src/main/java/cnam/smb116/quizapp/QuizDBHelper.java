@@ -13,7 +13,7 @@ import cnam.smb116.quizapp.QuestionContract.QuestionsTable;
 
 public class QuizDBHelper extends SQLiteOpenHelper {
     protected static final String DATABASE_NAME = "QuizApp.db";
-    protected static final int DATABASE_VERSION = 9;
+    protected static final int DATABASE_VERSION = 10;
 
     private SQLiteDatabase db;
 
@@ -59,17 +59,27 @@ public class QuizDBHelper extends SQLiteOpenHelper {
     }
 
     private void fillQuestionsTable() {
-        Question q1 = new Question("A 4-hour Sprint Planning meeting is typical for a Sprint or Iteration that is how long?", Question.QuestionType.MultipleChoices,
-                "Four weeks", "Two weeks", "Four days","One week", "", "");
-        Question q2 = new Question("What is the best definition of ‘Done’?", Question.QuestionType.MultipleChoices,
-                "When a development work is ready for a release", "When a product meets Product Owner expectations", "When a product has passed Quality Assurance (QA) test and has all the required release\n" +
-                "documentation","When it is determined by the Scrum Master", "", "");
-        Question q3 = new Question("C is correct", Question.QuestionType.MultipleChoices, "A", "B", "C","D", "3", "Parce que");
-        Question q4 = new Question("D is correct", Question.QuestionType.MultipleChoices, "A", "B", "C","D", "4", "Parce que");
-        Question q5 = new Question("B is correct again", Question.QuestionType.MultipleChoices, "A", "B", "C","D", "2", "Parce que");
-        Question q6 = new Question("Quelle est la couleur du cheval blanc d'Henri IV ?", Question.QuestionType.Text, null, null, null,null, "Blanc", "Parce que");
-        Question q7 = new Question("Comment s'appelle l'alcool japonais à base de prunes ?", Question.QuestionType.Text, null, null, null,null, "Umeshu", "Parce que");
-        Question q8 = new Question("Qui a composé la Vème Symphonie ?", Question.QuestionType.Text, null, null, null,null, "Beethoven", "Parce que");
+        Question q1 = new Question("A 4-hour Sprint Planning meeting is typical for a Sprint or Iteration that is how long?", Question.QuestionType.SingleChoice,
+                "Four weeks", "Two weeks", "Four days","One week", "2", "");
+        Question q2 = new Question("What is the best definition of ‘Done’?", Question.QuestionType.SingleChoice,
+                "When a development work is ready for a release", "When a product meets Product Owner expectations", "When a product has passed Quality Assurance (QA) test and has all the required release documentation","When it is determined by the Scrum Master", "1", "");
+        Question q3 = new Question("How should multiple cohesive Scrum Teams be structured in order to produce integrated Increments on the same product?", Question.QuestionType.SingleChoice,
+                "Each Scrum Team develops all technical parts of functionality", "Each Scrum Team only works on one technical layer of the system", null ,null, "1", "");
+        Question q4 = new Question("Who can prematurely cancel or terminate a Sprint?", Question.QuestionType.SingleChoice,
+                "The Product Owner", "The Developers", "The Scrum Master","The customer", "1", "");
+        Question q5 = new Question("The IT Manager asks Developers for a status report describing the progress throughout the Sprint. How can the Scrum Master help the team?", Question.QuestionType.SingleChoice,
+                "Tell the Developers to produce the report by themselves", "Create and deliver the report to the Manager him/herself", "Explain to the IT Manager that the Sprint Review is a good opportunity to produce a status report","Ask the Product Owner to send the report to the Manager", "3", "");
+        Question q6 = new Question("What enhances the transparency of an Increment?", Question.QuestionType.SingleChoice,
+                "Updating Sprint tasks accurately in the electronic tracking tool", "Doing all the work defined in the Sprint Backlog", "Doing all the work needed to meet the Definition of Done","Reporting Sprint progress to the Stakeholders daily", "3", "");
+        Question q7 = new Question("How should multiple Scrum teams be created?", Question.QuestionType.SingleChoice,
+                "By asking the Developers to break into teams", "By asking the Product Owner to assign people to the different teams", "Assembling teams based on people skills across multiple application layers (such a database, UI, etc.)",null, "1", "");
+        Question q8 = new Question("Which of the following best describes the Daily Scrum?", Question.QuestionType.SingleChoice,
+                "The meeting should ensure that it is clear to all which team members are not performing", "There is no recommended length of time for the event", "Everyone is expected to stand for the whole duration to keep the meeting short","Everyone is expected to keep the meeting short and to focus on Sprint Goals", "4", "");
+        Question q9 = new Question("In a Burndown Chart:", Question.QuestionType.SingleChoice,
+                "X tracks cost, Y tracks value", "Y tracks value, Y tracks cost", "X tracks time, Y tracks work","X tracks work, Y tracks time", "3", "");
+        Question q10 = new Question("Which answer best describes the Product Backlog?", Question.QuestionType.SingleChoice,
+                "It is a Baseline to follow as part of the Change Management processes", "It is allowed to evolve and change as more is learned about the Product and its Customers", "It contains all foreseeable tasks and requirements from which the Scrum Team can develop and maintain a complete Project Plan","It provides just enough information to enable a Scrum Team to start the design phase of a Product", "2", "");
+        //Question q8 = new Question("Qui a composé la Vème Symphonie ?", Question.QuestionType.Text, null, null, null,null, "Beethoven", "Parce que");
         addQuestion(q1);
         addQuestion(q2);
         addQuestion(q3);
@@ -78,6 +88,8 @@ public class QuizDBHelper extends SQLiteOpenHelper {
         addQuestion(q6);
         addQuestion(q7);
         addQuestion(q8);
+        addQuestion(q9);
+        addQuestion(q10);
     }
 
     private void addQuestion(Question question) {
