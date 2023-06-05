@@ -59,21 +59,24 @@ public class QuizDBHelper extends SQLiteOpenHelper {
     }
 
     private void fillQuestionsTable() {
-        Question q1 = new Question("A is correct", Question.QuestionType.MultipleChoices, "A", "B", "C","D", "1", "Parce que");
-        addQuestion(q1);
-        Question q2 = new Question("B is correct", Question.QuestionType.MultipleChoices, "A", "B", "C","D", "2", "Parce que");
-        addQuestion(q2);
+        Question q1 = new Question("A 4-hour Sprint Planning meeting is typical for a Sprint or Iteration that is how long?", Question.QuestionType.MultipleChoices,
+                "Four weeks", "Two weeks", "Four days","One week", "", "");
+        Question q2 = new Question("What is the best definition of ‘Done’?", Question.QuestionType.MultipleChoices,
+                "When a development work is ready for a release", "When a product meets Product Owner expectations", "When a product has passed Quality Assurance (QA) test and has all the required release\n" +
+                "documentation","When it is determined by the Scrum Master", "", "");
         Question q3 = new Question("C is correct", Question.QuestionType.MultipleChoices, "A", "B", "C","D", "3", "Parce que");
-        addQuestion(q3);
         Question q4 = new Question("D is correct", Question.QuestionType.MultipleChoices, "A", "B", "C","D", "4", "Parce que");
-        addQuestion(q4);
         Question q5 = new Question("B is correct again", Question.QuestionType.MultipleChoices, "A", "B", "C","D", "2", "Parce que");
-        addQuestion(q5);
         Question q6 = new Question("Quelle est la couleur du cheval blanc d'Henri IV ?", Question.QuestionType.Text, null, null, null,null, "Blanc", "Parce que");
-        addQuestion(q6);
         Question q7 = new Question("Comment s'appelle l'alcool japonais à base de prunes ?", Question.QuestionType.Text, null, null, null,null, "Umeshu", "Parce que");
-        addQuestion(q7);
         Question q8 = new Question("Qui a composé la Vème Symphonie ?", Question.QuestionType.Text, null, null, null,null, "Beethoven", "Parce que");
+        addQuestion(q1);
+        addQuestion(q2);
+        addQuestion(q3);
+        addQuestion(q4);
+        addQuestion(q5);
+        addQuestion(q6);
+        addQuestion(q7);
         addQuestion(q8);
     }
 
