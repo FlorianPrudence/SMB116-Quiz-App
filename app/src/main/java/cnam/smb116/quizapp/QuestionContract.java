@@ -11,11 +11,16 @@ public final class QuestionContract {
         public static final String TABLE_NAME = "quiz_questions";
         public static final String COLUMN_QUESTION = "question";
         public static final String COLUMN_TYPE = "question_type";
-        public static final String COLUMN_OPTION1 = "option1";
-        public static final String COLUMN_OPTION2 = "option2";
-        public static final String COLUMN_OPTION3 = "option3";
-        public static final String COLUMN_OPTION4 = "option4";
+        public static final String COLUMN_OPTIONA = "optionA";
+        public static final String COLUMN_OPTIONB = "optionB";
+        public static final String COLUMN_OPTIONC = "optionC";
+        public static final String COLUMN_OPTIOND = "optionD";
+        public static final String COLUMN_OPTIONE = "optionE";
+        public static final String COLUMN_OPTIONF = "optionF";
+        public static final String COLUMN_OPTIONG = "optionG";
+        public static final String COLUMN_OPTIONH = "optionH";
+        public static final String COLUMN_OPTIONI = "optionI";
+        public static final String COLUMN_OPTIONJ = "optionJ";
         public static final String COLUMN_CORRECT_ANSWER = "correct_answer";
-        public static final String COLUMN_EXPLANATION = "explanation";
     }
 }

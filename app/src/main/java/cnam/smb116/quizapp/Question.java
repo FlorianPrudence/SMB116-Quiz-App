@@ -7,43 +7,36 @@ import androidx.annotation.NonNull;
 
 public class Question implements Parcelable {
     private String question;
-    private QuestionType type;
-    private String option1;
-    private String option2;
-    private String option3;
-    private String option4;
     private String correctAnswer;
-    private String explanation;
+    private String optionA;
+    private String optionB;
+    private String optionC;
+    private String optionD;
+    private String optionE;
+    private String optionF;
+    private String optionG;
+    private String optionH;
+    private String optionI;
+    private String optionJ;
+    private QuestionType type;
 
     public Question() {
     }
 
-    public enum QuestionType {
-        SingleChoice,
-        MultipleChoice,
-        Text
-    }
-
-    public Question(String question, QuestionType type, String option1, String option2, String option3, String option4, String correctAnswer, String explanation) {
-        this.question = question;
-        this.type = type;
-        this.option1 = option1;
-        this.option2 = option2;
-        this.option3 = option3;
-        this.option4 = option4;
-        this.correctAnswer = correctAnswer;
-        this.explanation = explanation;
-    }
-
     protected Question(Parcel in) {
         question = in.readString();
-        type = QuestionType.valueOf(in.readString());
-        option1 = in.readString();
-        option2 = in.readString();
-        option3 = in.readString();
-        option4 = in.readString();
         correctAnswer = in.readString();
-        explanation = in.readString();
+        optionA = in.readString();
+        optionB = in.readString();
+        optionC = in.readString();
+        optionD = in.readString();
+        optionE = in.readString();
+        optionF = in.readString();
+        optionG = in.readString();
+        optionH = in.readString();
+        optionI = in.readString();
+        optionJ = in.readString();
+        type = QuestionType.valueOf(in.readString());
     }
 
     public static final Creator<Question> CREATOR = new Creator<Question>() {
@@ -58,60 +51,56 @@ public class Question implements Parcelable {
         }
     };
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel parcel, int i) {
+        parcel.writeString(question);
+        parcel.writeString(correctAnswer);
+        parcel.writeString(optionA);
+        parcel.writeString(optionB);
+        parcel.writeString(optionC);
+        parcel.writeString(optionD);
+        parcel.writeString(optionE);
+        parcel.writeString(optionF);
+        parcel.writeString(optionG);
+        parcel.writeString(optionH);
+        parcel.writeString(optionI);
+        parcel.writeString(optionJ);
+        parcel.writeString(type.name());
+    }
+
+    public enum QuestionType {
+        SingleChoice,
+        MultipleChoice,
+        Text
+    }
+
+    public Question(String question, String correctAnswer, String optionA, String optionB, String optionC, String optionD, String optionE, String optionF, String optionG, String optionH, String optionI, String optionJ, QuestionType type) {
+        this.question = question;
+        this.correctAnswer = correctAnswer;
+        this.optionA = optionA;
+        this.optionB = optionB;
+        this.optionC = optionC;
+        this.optionD = optionD;
+        this.optionE = optionE;
+        this.optionF = optionF;
+        this.optionG = optionG;
+        this.optionH = optionH;
+        this.optionI = optionI;
+        this.optionJ = optionJ;
+        this.type = type;
+    }
+
     public String getQuestion() {
         return question;
     }
 
     public void setQuestion(String question) {
         this.question = question;
-    }
-
-    public String getExplanation() {
-        return explanation;
-    }
-
-    public void setExplanation(String explanation) {
-        this.explanation = explanation;
-    }
-
-    public QuestionType getType() {
-        return type;
-    }
-
-    public void setType(QuestionType type) {
-        this.type = type;
-    }
-
-    public String getOption1() {
-        return option1;
-    }
-
-    public void setOption1(String option1) {
-        this.option1 = option1;
-    }
-
-    public String getOption2() {
-        return option2;
-    }
-
-    public void setOption2(String option2) {
-        this.option2 = option2;
-    }
-
-    public String getOption3() {
-        return option3;
-    }
-
-    public void setOption3(String option3) {
-        this.option3 = option3;
-    }
-
-    public String getOption4() {
-        return option4;
-    }
-
-    public void setOption4(String option4) {
-        this.option4 = option4;
     }
 
     public String getCorrectAnswer() {
@@ -122,20 +111,91 @@ public class Question implements Parcelable {
         this.correctAnswer = correctAnswer;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
+    public String getOptionA() {
+        return optionA;
     }
 
-    @Override
-    public void writeToParcel(@NonNull Parcel parcel, int i) {
-        parcel.writeString(question);
-        parcel.writeString(type.name());
-        parcel.writeString(option1);
-        parcel.writeString(option2);
-        parcel.writeString(option3);
-        parcel.writeString(option4);
-        parcel.writeString(correctAnswer);
-        parcel.writeString(explanation);
+    public void setOptionA(String optionA) {
+        this.optionA = optionA;
+    }
+
+    public String getOptionB() {
+        return optionB;
+    }
+
+    public void setOptionB(String optionB) {
+        this.optionB = optionB;
+    }
+
+    public String getOptionC() {
+        return optionC;
+    }
+
+    public void setOptionC(String optionC) {
+        this.optionC = optionC;
+    }
+
+    public String getOptionD() {
+        return optionD;
+    }
+
+    public void setOptionD(String optionD) {
+        this.optionD = optionD;
+    }
+
+    public String getOptionE() {
+        return optionE;
+    }
+
+    public void setOptionE(String optionE) {
+        this.optionE = optionE;
+    }
+
+    public String getOptionF() {
+        return optionF;
+    }
+
+    public void setOptionF(String optionF) {
+        this.optionF = optionF;
+    }
+
+    public String getOptionG() {
+        return optionG;
+    }
+
+    public void setOptionG(String optionG) {
+        this.optionG = optionG;
+    }
+
+    public String getOptionH() {
+        return optionH;
+    }
+
+    public void setOptionH(String optionH) {
+        this.optionH = optionH;
+    }
+
+    public String getOptionI() {
+        return optionI;
+    }
+
+    public void setOptionI(String optionI) {
+        this.optionI = optionI;
+    }
+
+    public String getOptionJ() {
+        return optionJ;
+    }
+
+    public void setOptionJ(String optionJ) {
+        this.optionJ = optionJ;
+    }
+
+    public QuestionType getType() {
+        return type;
+    }
+
+    public void setType(QuestionType type) {
+        this.type = type;
     }
 }
