@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         EditText editTextQuestionQty = findViewById(R.id.edit_text_question_qty);
 
         QuizDBHelper dbHelper = new QuizDBHelper(this);
-        int questionCount = dbHelper.countQuestionsByType(Question.QuestionType.SingleChoice);
+        int questionCount = dbHelper.countAllQuestions();
 
         if(questionCount < FULL_TEST_QUESTION_COUNT)
             buttonStartFullQuiz.setEnabled(false);

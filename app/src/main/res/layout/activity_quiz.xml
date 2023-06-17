@@ -125,7 +125,80 @@
                     android:layout_below="@+id/button_answerI"
                     android:freezesText="true"/>
             </RelativeLayout>
-
+            <RelativeLayout
+                android:id="@+id/layout_multiple_answer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <CheckBox
+                    android:id="@+id/checkboxA"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Answer A" />
+                <CheckBox
+                    android:id="@+id/checkboxB"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Answer B"
+                    android:layout_below="@+id/checkboxA"/>
+                <CheckBox
+                    android:id="@+id/checkboxC"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Answer C"
+                    android:layout_below="@+id/checkboxB"/>
+                <CheckBox
+                    android:id="@+id/checkboxD"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Answer D"
+                    android:layout_below="@+id/checkboxC"/>
+                <CheckBox
+                    android:id="@+id/checkboxE"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Answer E"
+                    android:layout_below="@+id/checkboxD"/>
+                <CheckBox
+                    android:id="@+id/checkboxF"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Answer F"
+                    android:layout_below="@+id/checkboxE"/>
+                <CheckBox
+                    android:id="@+id/checkboxG"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Answer G"
+                    android:layout_below="@+id/checkboxF"/>
+                <CheckBox
+                    android:id="@+id/checkboxH"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Answer H"
+                    android:layout_below="@+id/checkboxG"/>
+                <CheckBox
+                    android:id="@+id/checkboxI"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Answer I"
+                    android:layout_below="@+id/checkboxH"/>
+                <CheckBox
+                    android:id="@+id/checkboxJ"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Answer J"
+                    android:layout_below="@+id/checkboxI"/>
+                <Button
+                    android:id="@+id/button_multiple_answer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Confirm"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginEnd="32dp"
+                    android:freezesText="true"
+                    android:layout_below="@+id/checkboxJ"/>
+            </RelativeLayout>
             <RelativeLayout
                 android:id="@+id/layout_text_answer"
                 android:layout_width="match_parent"
@@ -150,17 +223,6 @@
                     android:freezesText="true"/>
             </RelativeLayout>
         </RelativeLayout>
-
-        <TextView
-            android:id="@+id/text_view_explanation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/layout_answers"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            android:freezesText="true"/>
 
     </RelativeLayout>
 

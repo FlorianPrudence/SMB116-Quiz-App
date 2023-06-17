@@ -15,6 +15,7 @@ import android.text.InputType;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -37,10 +38,11 @@ public class QuizActivity extends AppCompatActivity {
     private static final String KEY_ANSWERED = "keyAnswered";
     private static final String KEY_QUESTION_LIST = "keyQuestionList";
 
-    private TextView textViewQuestion, textViewScore, textViewQuestionCount, textViewCountDown, textViewExplanation;
-    private Button btnAnswerA, btnAnswerB, btnAnswerC, btnAnswerD, btnAnswerE, btnAnswerF, btnAnswerG, btnAnswerH, btnAnswerI, btnAnswerJ, btnAnswerText;
+    private TextView textViewQuestion, textViewScore, textViewQuestionCount, textViewCountDown;
+    private Button btnAnswerA, btnAnswerB, btnAnswerC, btnAnswerD, btnAnswerE, btnAnswerF, btnAnswerG, btnAnswerH, btnAnswerI, btnAnswerJ, btnAnswerText, btnMultipleAnswer;
+    private CheckBox cbAnswerA, cbAnswerB, cbAnswerC, cbAnswerD, cbAnswerE, cbAnswerF, cbAnswerG, cbAnswerH, cbAnswerI, cbAnswerJ;
     private EditText textAnswer;
-    private RelativeLayout btnAnswerLayout, textAnswerLayout;
+    private RelativeLayout btnAnswerLayout, textAnswerLayout, multipleAnswerLayout;
     private ColorStateList textColorDefaultBtn, textColorDefaultCd;
     private CountDownTimer countDownTimer;
     private long timeLeftInMillis, backPressedTime;
@@ -60,7 +62,6 @@ public class QuizActivity extends AppCompatActivity {
         textViewScore = findViewById(R.id.text_view_score);
         textViewQuestionCount = findViewById(R.id.text_view_question_count);
         textViewCountDown = findViewById(R.id.text_view_countdown);
-        textViewExplanation = findViewById(R.id.text_view_explanation);
         textAnswer = findViewById(R.id.edit_text_answer);
 
         btnAnswerA = findViewById(R.id.button_answerA);
@@ -74,17 +75,30 @@ public class QuizActivity extends AppCompatActivity {
         btnAnswerI = findViewById(R.id.button_answerI);
         btnAnswerJ = findViewById(R.id.button_answerJ);
         btnAnswerText = findViewById(R.id.button_text_answer);
+        btnMultipleAnswer = findViewById(R.id.button_multiple_answer);
+
+        cbAnswerA = findViewById(R.id.checkboxA);
+        cbAnswerB = findViewById(R.id.checkboxB);
+        cbAnswerC = findViewById(R.id.checkboxC);
+        cbAnswerD = findViewById(R.id.checkboxD);
+        cbAnswerE = findViewById(R.id.checkboxE);
+        cbAnswerF = findViewById(R.id.checkboxF);
+        cbAnswerG = findViewById(R.id.checkboxG);
+        cbAnswerH = findViewById(R.id.checkboxH);
+        cbAnswerI = findViewById(R.id.checkboxI);
+        cbAnswerJ = findViewById(R.id.checkboxJ);
 
         btnAnswerLayout = findViewById(R.id.layout_btn_answer);
         textAnswerLayout = findViewById(R.id.layout_text_answer);
+        multipleAnswerLayout = findViewById(R.id.layout_multiple_answer);
 
         textColorDefaultBtn = btnAnswerA.getTextColors();
         textColorDefaultCd = textViewCountDown.getTextColors();
 
         if (savedInstanceState == null) {
             dbHelper = new QuizDBHelper(this);
-            questionCountTotal = getIntent().getIntExtra(QUESTION_QTY, dbHelper.countQuestionsByType(Question.QuestionType.SingleChoice));
-            questionList = dbHelper.getQuestionsByType(Question.QuestionType.SingleChoice);
+            questionCountTotal = getIntent().getIntExtra(QUESTION_QTY, dbHelper.countAllQuestions());
+            questionList = dbHelper.getAllQuestions();
             Collections.shuffle(questionList);
             showNextQuestion();
         } else {
@@ -228,6 +242,18 @@ public class QuizActivity extends AppCompatActivity {
                 }
             }
         });
+        btnMultipleAnswer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(answered) {
+                    showNextQuestion();
+                }
+                else {
+                    answer = parseMultipleAnswer();
+                    checkAnswer();
+                }
+            }
+        });
         btnAnswerText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -254,6 +280,16 @@ public class QuizActivity extends AppCompatActivity {
         btnAnswerH.setTextColor(textColorDefaultBtn);
         btnAnswerI.setTextColor(textColorDefaultBtn);
         btnAnswerJ.setTextColor(textColorDefaultBtn);
+        cbAnswerA.setTextColor(textColorDefaultCd);
+        cbAnswerB.setTextColor(textColorDefaultCd);
+        cbAnswerC.setTextColor(textColorDefaultCd);
+        cbAnswerD.setTextColor(textColorDefaultCd);
+        cbAnswerE.setTextColor(textColorDefaultCd);
+        cbAnswerF.setTextColor(textColorDefaultCd);
+        cbAnswerG.setTextColor(textColorDefaultCd);
+        cbAnswerH.setTextColor(textColorDefaultCd);
+        cbAnswerI.setTextColor(textColorDefaultCd);
+        cbAnswerJ.setTextColor(textColorDefaultCd);
         textAnswer.setTextColor(textColorDefaultCd);
         textAnswer.getText().clear();
 
@@ -261,11 +297,11 @@ public class QuizActivity extends AppCompatActivity {
             currentQuestion = questionList.get(questionCounter);
 
             textViewQuestion.setText(currentQuestion.getQuestion());
-            textViewExplanation.setText("");
 
             switch (currentQuestion.getType()) {
                 case Text:
                     btnAnswerLayout.setVisibility(View.INVISIBLE);
+                    multipleAnswerLayout.setVisibility(View.INVISIBLE);
                     textAnswerLayout.setVisibility(View.VISIBLE);
                     textAnswer.setInputType(InputType.TYPE_CLASS_TEXT);
                     btnAnswerText.setText("Confirm");
@@ -273,97 +309,205 @@ public class QuizActivity extends AppCompatActivity {
                 case SingleChoice:
                     btnAnswerLayout.setVisibility(View.VISIBLE);
                     textAnswerLayout.setVisibility(View.INVISIBLE);
+                    multipleAnswerLayout.setVisibility(View.INVISIBLE);
+
+                    if (currentQuestion.getOptionA() != null) {
+                        btnAnswerA.setVisibility(View.VISIBLE);
+                        btnAnswerA.setEnabled(true);
+                        btnAnswerA.setText(currentQuestion.getOptionA());
+                    } else {
+                        btnAnswerA.setVisibility(View.INVISIBLE);
+                        btnAnswerA.setEnabled(false);
+                    }
+
+                    if (currentQuestion.getOptionB() != null) {
+                        btnAnswerB.setVisibility(View.VISIBLE);
+                        btnAnswerB.setEnabled(true);
+                        btnAnswerB.setText(currentQuestion.getOptionB());
+                    } else {
+                        btnAnswerB.setVisibility(View.INVISIBLE);
+                        btnAnswerB.setEnabled(false);
+                    }
+
+                    if (currentQuestion.getOptionC() != null) {
+                        btnAnswerC.setVisibility(View.VISIBLE);
+                        btnAnswerC.setEnabled(true);
+                        btnAnswerC.setText(currentQuestion.getOptionC());
+                    } else {
+                        btnAnswerC.setVisibility(View.INVISIBLE);
+                        btnAnswerC.setEnabled(false);
+                    }
+
+                    if (currentQuestion.getOptionD() != null) {
+                        btnAnswerD.setVisibility(View.VISIBLE);
+                        btnAnswerD.setEnabled(true);
+                        btnAnswerD.setText(currentQuestion.getOptionD());
+                    } else {
+                        btnAnswerD.setVisibility(View.INVISIBLE);
+                        btnAnswerD.setEnabled(false);
+                    }
+
+                    if (currentQuestion.getOptionE() != null) {
+                        btnAnswerE.setVisibility(View.VISIBLE);
+                        btnAnswerE.setEnabled(true);
+                        btnAnswerE.setText(currentQuestion.getOptionE());
+                    } else {
+                        btnAnswerE.setVisibility(View.INVISIBLE);
+                        btnAnswerE.setEnabled(false);
+                    }
+
+                    if (currentQuestion.getOptionF() != null) {
+                        btnAnswerF.setVisibility(View.VISIBLE);
+                        btnAnswerF.setEnabled(true);
+                        btnAnswerF.setText(currentQuestion.getOptionF());
+                    } else {
+                        btnAnswerF.setVisibility(View.INVISIBLE);
+                        btnAnswerF.setEnabled(false);
+                    }
+
+                    if (currentQuestion.getOptionG() != null) {
+                        btnAnswerG.setVisibility(View.VISIBLE);
+                        btnAnswerG.setEnabled(true);
+                        btnAnswerG.setText(currentQuestion.getOptionG());
+                    } else {
+                        btnAnswerG.setVisibility(View.INVISIBLE);
+                        btnAnswerG.setEnabled(false);
+                    }
+
+                    if (currentQuestion.getOptionH() != null) {
+                        btnAnswerH.setVisibility(View.VISIBLE);
+                        btnAnswerH.setEnabled(true);
+                        btnAnswerH.setText(currentQuestion.getOptionH());
+                    } else {
+                        btnAnswerH.setVisibility(View.INVISIBLE);
+                        btnAnswerH.setEnabled(false);
+                    }
+
+                    if (currentQuestion.getOptionI() != null) {
+                        btnAnswerI.setVisibility(View.VISIBLE);
+                        btnAnswerI.setEnabled(true);
+                        btnAnswerI.setText(currentQuestion.getOptionI());
+                    } else {
+                        btnAnswerI.setVisibility(View.INVISIBLE);
+                        btnAnswerI.setEnabled(false);
+                    }
+
+                    if (currentQuestion.getOptionJ() != null) {
+                        btnAnswerJ.setVisibility(View.VISIBLE);
+                        btnAnswerJ.setEnabled(true);
+                        btnAnswerJ.setText(currentQuestion.getOptionJ());
+                    } else {
+                        btnAnswerJ.setVisibility(View.INVISIBLE);
+                        btnAnswerJ.setEnabled(false);
+                    }
                     break;
-            }
+                case MultipleChoice:
+                    btnAnswerLayout.setVisibility(View.INVISIBLE);
+                    textAnswerLayout.setVisibility(View.INVISIBLE);
+                    multipleAnswerLayout.setVisibility(View.VISIBLE);
 
-            if (currentQuestion.getOptionA() != null) {
-                btnAnswerA.setVisibility(View.VISIBLE);
-                btnAnswerA.setEnabled(true);
-                btnAnswerA.setText(currentQuestion.getOptionA());
-            } else {
-                btnAnswerA.setVisibility(View.INVISIBLE);
-                btnAnswerA.setEnabled(true);
-            }
+                    if (currentQuestion.getOptionA() != null) {
+                        cbAnswerA.setVisibility(View.VISIBLE);
+                        cbAnswerA.setEnabled(true);
+                        cbAnswerA.setText(currentQuestion.getOptionA());
+                    } else {
+                        cbAnswerA.setVisibility(View.INVISIBLE);
+                        cbAnswerA.setEnabled(false);
+                    }
+                    cbAnswerA.setChecked(false);
 
-            if (currentQuestion.getOptionB() != null) {
-                btnAnswerB.setVisibility(View.VISIBLE);
-                btnAnswerB.setEnabled(true);
-                btnAnswerB.setText(currentQuestion.getOptionB());
-            } else {
-                btnAnswerB.setVisibility(View.INVISIBLE);
-                btnAnswerB.setEnabled(true);
-            }
+                    if (currentQuestion.getOptionB() != null) {
+                        cbAnswerB.setVisibility(View.VISIBLE);
+                        cbAnswerB.setEnabled(true);
+                        cbAnswerB.setText(currentQuestion.getOptionB());
+                    } else {
+                        cbAnswerB.setVisibility(View.INVISIBLE);
+                        cbAnswerB.setEnabled(false);
+                    }
+                    cbAnswerB.setChecked(false);
 
-            if (currentQuestion.getOptionC() != null) {
-                btnAnswerC.setVisibility(View.VISIBLE);
-                btnAnswerC.setEnabled(true);
-                btnAnswerC.setText(currentQuestion.getOptionC());
-            } else {
-                btnAnswerC.setVisibility(View.INVISIBLE);
-                btnAnswerC.setEnabled(true);
-            }
+                    if (currentQuestion.getOptionC() != null) {
+                        cbAnswerC.setVisibility(View.VISIBLE);
+                        cbAnswerC.setEnabled(true);
+                        cbAnswerC.setText(currentQuestion.getOptionC());
+                    } else {
+                        cbAnswerC.setVisibility(View.INVISIBLE);
+                        cbAnswerC.setEnabled(false);
+                    }
+                    cbAnswerC.setChecked(false);
 
-            if (currentQuestion.getOptionD() != null) {
-                btnAnswerD.setVisibility(View.VISIBLE);
-                btnAnswerD.setEnabled(true);
-                btnAnswerD.setText(currentQuestion.getOptionD());
-            } else {
-                btnAnswerD.setVisibility(View.INVISIBLE);
-                btnAnswerD.setEnabled(true);
-            }
+                    if (currentQuestion.getOptionD() != null) {
+                        cbAnswerD.setVisibility(View.VISIBLE);
+                        cbAnswerD.setEnabled(true);
+                        cbAnswerD.setText(currentQuestion.getOptionD());
+                    } else {
+                        cbAnswerD.setVisibility(View.INVISIBLE);
+                        cbAnswerD.setEnabled(false);
+                    }
+                    cbAnswerD.setChecked(false);
 
-            if (currentQuestion.getOptionE() != null) {
-                btnAnswerE.setVisibility(View.VISIBLE);
-                btnAnswerE.setEnabled(true);
-                btnAnswerE.setText(currentQuestion.getOptionE());
-            } else {
-                btnAnswerE.setVisibility(View.INVISIBLE);
-                btnAnswerE.setEnabled(true);
-            }
+                    if (currentQuestion.getOptionE() != null) {
+                        cbAnswerE.setVisibility(View.VISIBLE);
+                        cbAnswerE.setEnabled(true);
+                        cbAnswerE.setText(currentQuestion.getOptionE());
+                    } else {
+                        cbAnswerE.setVisibility(View.INVISIBLE);
+                        cbAnswerE.setEnabled(false);
+                    }
+                    cbAnswerE.setChecked(false);
 
-            if (currentQuestion.getOptionF() != null) {
-                btnAnswerF.setVisibility(View.VISIBLE);
-                btnAnswerF.setEnabled(true);
-                btnAnswerF.setText(currentQuestion.getOptionF());
-            } else {
-                btnAnswerF.setVisibility(View.INVISIBLE);
-                btnAnswerF.setEnabled(true);
-            }
+                    if (currentQuestion.getOptionF() != null) {
+                        cbAnswerF.setVisibility(View.VISIBLE);
+                        cbAnswerF.setEnabled(true);
+                        cbAnswerF.setText(currentQuestion.getOptionF());
+                    } else {
+                        cbAnswerF.setVisibility(View.INVISIBLE);
+                        cbAnswerF.setEnabled(false);
+                    }
+                    cbAnswerF.setChecked(false);
 
-            if (currentQuestion.getOptionG() != null) {
-                btnAnswerG.setVisibility(View.VISIBLE);
-                btnAnswerG.setEnabled(true);
-                btnAnswerG.setText(currentQuestion.getOptionG());
-            } else {
-                btnAnswerG.setVisibility(View.INVISIBLE);
-                btnAnswerG.setEnabled(true);
-            }
+                    if (currentQuestion.getOptionG() != null) {
+                        cbAnswerG.setVisibility(View.VISIBLE);
+                        cbAnswerG.setEnabled(true);
+                        cbAnswerG.setText(currentQuestion.getOptionG());
+                    } else {
+                        cbAnswerG.setVisibility(View.INVISIBLE);
+                        cbAnswerG.setEnabled(false);
+                    }
+                    cbAnswerG.setChecked(false);
 
-            if (currentQuestion.getOptionH() != null) {
-                btnAnswerH.setVisibility(View.VISIBLE);
-                btnAnswerH.setEnabled(true);
-                btnAnswerH.setText(currentQuestion.getOptionH());
-            } else {
-                btnAnswerH.setVisibility(View.INVISIBLE);
-                btnAnswerH.setEnabled(true);
-            }
+                    if (currentQuestion.getOptionH() != null) {
+                        cbAnswerH.setVisibility(View.VISIBLE);
+                        cbAnswerH.setEnabled(true);
+                        cbAnswerH.setText(currentQuestion.getOptionH());
+                    } else {
+                        cbAnswerH.setVisibility(View.INVISIBLE);
+                        cbAnswerH.setEnabled(false);
+                    }
+                    cbAnswerH.setChecked(false);
 
-            if (currentQuestion.getOptionI() != null) {
-                btnAnswerI.setVisibility(View.VISIBLE);
-                btnAnswerI.setEnabled(true);
-                btnAnswerI.setText(currentQuestion.getOptionI());
-            } else {
-                btnAnswerI.setVisibility(View.INVISIBLE);
-                btnAnswerI.setEnabled(true);
-            }
+                    if (currentQuestion.getOptionI() != null) {
+                        cbAnswerI.setVisibility(View.VISIBLE);
+                        cbAnswerI.setEnabled(true);
+                        cbAnswerI.setText(currentQuestion.getOptionI());
+                    } else {
+                        cbAnswerI.setVisibility(View.INVISIBLE);
+                        cbAnswerI.setEnabled(false);
+                    }
+                    cbAnswerI.setChecked(false);
 
-            if (currentQuestion.getOptionJ() != null) {
-                btnAnswerJ.setVisibility(View.VISIBLE);
-                btnAnswerJ.setEnabled(true);
-                btnAnswerJ.setText(currentQuestion.getOptionJ());
-            } else {
-                btnAnswerJ.setVisibility(View.INVISIBLE);
-                btnAnswerJ.setEnabled(true);
+                    if (currentQuestion.getOptionJ() != null) {
+                        cbAnswerJ.setVisibility(View.VISIBLE);
+                        cbAnswerJ.setEnabled(true);
+                        cbAnswerJ.setText(currentQuestion.getOptionJ());
+                    } else {
+                        cbAnswerJ.setVisibility(View.INVISIBLE);
+                        cbAnswerJ.setEnabled(false);
+                    }
+                    cbAnswerJ.setChecked(false);
+
+                    Toast.makeText(this, currentQuestion.getCorrectAnswer(), Toast.LENGTH_SHORT).show();
+                    break;
             }
 
             questionCounter++;
@@ -480,6 +624,50 @@ public class QuizActivity extends AppCompatActivity {
                         break;
                 }
                 break;
+            case MultipleChoice:
+                cbAnswerA.setTextColor(Color.RED);
+                cbAnswerB.setTextColor(Color.RED);
+                cbAnswerC.setTextColor(Color.RED);
+                cbAnswerD.setTextColor(Color.RED);
+                cbAnswerE.setTextColor(Color.RED);
+                cbAnswerF.setTextColor(Color.RED);
+                cbAnswerG.setTextColor(Color.RED);
+                cbAnswerH.setTextColor(Color.RED);
+                cbAnswerI.setTextColor(Color.RED);
+                cbAnswerJ.setTextColor(Color.RED);
+                String cAnswer = currentQuestion.getCorrectAnswer();
+
+                if(cAnswer.contains("A"))
+                    cbAnswerA.setTextColor(Color.GREEN);
+                if(cAnswer.contains("B"))
+                    cbAnswerB.setTextColor(Color.GREEN);
+                if(cAnswer.contains("C"))
+                    cbAnswerC.setTextColor(Color.GREEN);
+                if(cAnswer.contains("D"))
+                    cbAnswerD.setTextColor(Color.GREEN);
+                if(cAnswer.contains("E"))
+                    cbAnswerE.setTextColor(Color.GREEN);
+                if(cAnswer.contains("F"))
+                    cbAnswerF.setTextColor(Color.GREEN);
+                if(cAnswer.contains("E"))
+                    cbAnswerE.setTextColor(Color.GREEN);
+                if(cAnswer.contains("F"))
+                    cbAnswerF.setTextColor(Color.GREEN);
+                if(cAnswer.contains("G"))
+                    cbAnswerG.setTextColor(Color.GREEN);
+                if(cAnswer.contains("H"))
+                    cbAnswerH.setTextColor(Color.GREEN);
+                if(cAnswer.contains("I"))
+                    cbAnswerG.setTextColor(Color.GREEN);
+                if(cAnswer.contains("J"))
+                    cbAnswerH.setTextColor(Color.GREEN);
+
+                if (questionCounter < questionCountTotal)
+                    btnMultipleAnswer.setText("Next Question");
+                else
+                    btnMultipleAnswer.setText("Finish");
+                break;
+
         }
     }
 
@@ -493,13 +681,43 @@ public class QuizActivity extends AppCompatActivity {
         finish();
     }
 
+    private String parseMultipleAnswer() {
+        StringBuilder blr = new StringBuilder();
+        if(cbAnswerA.isChecked())
+            blr.append("A;");
+        if(cbAnswerB.isChecked())
+            blr.append("B;");
+        if(cbAnswerC.isChecked())
+            blr.append("C;");
+        if(cbAnswerD.isChecked())
+            blr.append("D;");
+        if(cbAnswerE.isChecked())
+            blr.append("E;");
+        if(cbAnswerF.isChecked())
+            blr.append("F;");
+        if(cbAnswerG.isChecked())
+            blr.append("G;");
+        if(cbAnswerH.isChecked())
+            blr.append("H;");
+        if(cbAnswerI.isChecked())
+            blr.append("I;");
+        if(cbAnswerJ.isChecked())
+            blr.append("J");
+
+        if(blr.length() > 0 && blr.charAt(blr.length() - 1) == ';')
+            blr.deleteCharAt(blr.length() - 1);
+
+        Toast.makeText(this, blr.toString(), Toast.LENGTH_SHORT).show();
+        return blr.toString();
+    }
+
     @Override
     public void onBackPressed() {
         if (backPressedTime + 2000 > System.currentTimeMillis()) {
             setResult(RESULT_CANCELED);
             finish();
         } else {
-            Toast.makeText(this, "Appuyez à nouveau sur retour pour quitter", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Press back again to leave", Toast.LENGTH_SHORT).show();
         }
 
         backPressedTime = System.currentTimeMillis();
