@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="64dp"
         android:layout_centerHorizontal="true"
-        android:text="Retour" />
+        android:text="Back" />
     <ListView
         android:id="@+id/result_listView"
         android:layout_width="match_parent"

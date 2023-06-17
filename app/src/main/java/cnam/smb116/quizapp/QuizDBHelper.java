@@ -13,7 +13,7 @@ import cnam.smb116.quizapp.QuestionContract.QuestionsTable;
 
 public class QuizDBHelper extends SQLiteOpenHelper {
     protected static final String DATABASE_NAME = "QuizApp.db";
-    protected static final int DATABASE_VERSION = 11;
+    protected static final int DATABASE_VERSION = 12;
 
     private SQLiteDatabase db;
 
@@ -394,12 +394,12 @@ public class QuizDBHelper extends SQLiteOpenHelper {
         cv.put(QuestionsTable.COLUMN_OPTIONB, question.getOptionB());
         cv.put(QuestionsTable.COLUMN_OPTIONC, question.getOptionC());
         cv.put(QuestionsTable.COLUMN_OPTIOND, question.getOptionD());
-        cv.put(QuestionsTable.COLUMN_OPTIONE, question.getOptionD());
-        cv.put(QuestionsTable.COLUMN_OPTIONF, question.getOptionD());
-        cv.put(QuestionsTable.COLUMN_OPTIONG, question.getOptionD());
-        cv.put(QuestionsTable.COLUMN_OPTIONH, question.getOptionD());
-        cv.put(QuestionsTable.COLUMN_OPTIONI, question.getOptionD());
-        cv.put(QuestionsTable.COLUMN_OPTIONJ, question.getOptionD());
+        cv.put(QuestionsTable.COLUMN_OPTIONE, question.getOptionE());
+        cv.put(QuestionsTable.COLUMN_OPTIONF, question.getOptionF());
+        cv.put(QuestionsTable.COLUMN_OPTIONG, question.getOptionG());
+        cv.put(QuestionsTable.COLUMN_OPTIONH, question.getOptionH());
+        cv.put(QuestionsTable.COLUMN_OPTIONI, question.getOptionI());
+        cv.put(QuestionsTable.COLUMN_OPTIONJ, question.getOptionJ());
         cv.put(QuestionsTable.COLUMN_TYPE, question.getType().name());
         db.insert(QuestionsTable.TABLE_NAME, null, cv);
     }
@@ -413,12 +413,32 @@ public class QuizDBHelper extends SQLiteOpenHelper {
         return count;
     }
 
+    public int countQuestionsByType(Question.QuestionType type) {
+        db = getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT COUNT(*) FROM " + QuestionsTable.TABLE_NAME+ " WHERE " + QuestionsTable.COLUMN_TYPE + "=?", new String[] {type.name()});
+        c.moveToFirst();
+        int count = c.getInt(0);
+        c.close();
+        return count;
+    }
+
     @SuppressLint("Range")
     public ArrayList<Question> getAllQuestions() {
-        ArrayList<Question> questionList = new ArrayList<>();
         db = getReadableDatabase();
         Cursor c = db.rawQuery("SELECT * FROM " + QuestionsTable.TABLE_NAME, null);
+        return parseQuestions(c);
+    }
 
+    @SuppressLint("Range")
+    public ArrayList<Question> getQuestionsByType(Question.QuestionType type) {
+        db = getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT * FROM " + QuestionsTable.TABLE_NAME + " WHERE " + QuestionsTable.COLUMN_TYPE + "=?", new String[] {type.name()});
+        return parseQuestions(c);
+    }
+
+    @SuppressLint("Range")
+    public ArrayList<Question> parseQuestions(Cursor c) {
+        ArrayList<Question> questionList = new ArrayList<>();
         if (c.moveToFirst()) {
             do {
                 Question question = new Question();
@@ -470,4 +490,6 @@ public class QuizDBHelper extends SQLiteOpenHelper {
         c.close();
         return resultList;
     }
+
+
 }

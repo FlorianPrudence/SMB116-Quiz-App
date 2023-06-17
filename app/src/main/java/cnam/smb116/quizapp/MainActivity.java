@@ -17,12 +17,11 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     public static final String KEY_HIGHSCORE = "quizzHighScore";
-
     public static final String QUESTION_QTY = "quizzQuestionQty";
+
+    public static final int FULL_TEST_QUESTION_COUNT = 80;
     private TextView textViewHighscore;
     private int highscore;
-
-    private int questionCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,24 +31,35 @@ public class MainActivity extends AppCompatActivity {
         textViewHighscore = findViewById(R.id.text_view_highscore);
         loadHighscore();
 
+        Button buttonStartFullQuiz = findViewById(R.id.button_start_full_quiz);
         Button buttonStartQuiz = findViewById(R.id.button_start_quiz);
         Button buttonSeeResults = findViewById(R.id.button_see_results);
         EditText editTextQuestionQty = findViewById(R.id.edit_text_question_qty);
 
         QuizDBHelper dbHelper = new QuizDBHelper(this);
-        questionCount = dbHelper.countAllQuestions();
+        int questionCount = dbHelper.countQuestionsByType(Question.QuestionType.SingleChoice);
+
+        if(questionCount < FULL_TEST_QUESTION_COUNT)
+            buttonStartFullQuiz.setEnabled(false);
+
         editTextQuestionQty.setFilters( new InputFilter[]{ new MinMaxFilter( "1" , String.valueOf(questionCount))});
         editTextQuestionQty.setHint(editTextQuestionQty.getHint() + " (Max : " + questionCount + ")");
+
+        buttonStartFullQuiz.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startQuiz(FULL_TEST_QUESTION_COUNT);
+            }
+        });
 
         buttonStartQuiz.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(editTextQuestionQty.getText().length() > 0) {
                     int questionQty = Integer.parseInt(editTextQuestionQty.getText().toString());
-                    Toast.makeText(MainActivity.this, "Nombre de questions : " + questionQty, Toast.LENGTH_SHORT).show();
                     startQuiz(questionQty);
                 } else {
-                    Toast.makeText(MainActivity.this, "Veuillez saisir un nombre de question valide", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Please input a valid number of questions", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -85,12 +95,12 @@ public class MainActivity extends AppCompatActivity {
     private void loadHighscore() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         highscore = prefs.getInt(KEY_HIGHSCORE, 0);
-        textViewHighscore.setText("Highscore: " + highscore);
+        textViewHighscore.setText(getString(R.string.highscore) + highscore);
     }
 
     private void updateHighscore(int newHighscore) {
         highscore = newHighscore;
-        textViewHighscore.setText("Highscore: " + highscore);
+        textViewHighscore.setText(getString(R.string.highscore) + highscore);
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor sEdit = prefs.edit();
