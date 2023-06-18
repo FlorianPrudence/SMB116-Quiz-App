@@ -96,34 +96,6 @@
                     android:text="Answer F"
                     android:layout_below="@+id/button_answerE"
                     android:freezesText="true"/>
-                <Button
-                    android:id="@+id/button_answerG"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Answer G"
-                    android:layout_below="@+id/button_answerF"
-                    android:freezesText="true"/>
-                <Button
-                    android:id="@+id/button_answerH"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Answer H"
-                    android:layout_below="@+id/button_answerG"
-                    android:freezesText="true"/>
-                <Button
-                    android:id="@+id/button_answerI"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Answer I"
-                    android:layout_below="@+id/button_answerH"
-                    android:freezesText="true"/>
-                <Button
-                    android:id="@+id/button_answerJ"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Answer J"
-                    android:layout_below="@+id/button_answerI"
-                    android:freezesText="true"/>
             </RelativeLayout>
             <RelativeLayout
                 android:id="@+id/layout_multiple_answer"
@@ -188,16 +160,6 @@
                     android:layout_height="wrap_content"
                     android:text="Answer J"
                     android:layout_below="@+id/checkboxI"/>
-                <Button
-                    android:id="@+id/button_multiple_answer"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Confirm"
-                    android:layout_marginTop="32dp"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginEnd="32dp"
-                    android:freezesText="true"
-                    android:layout_below="@+id/checkboxJ"/>
             </RelativeLayout>
             <RelativeLayout
                 android:id="@+id/layout_text_answer"
@@ -211,19 +173,18 @@
                     android:hint="Input your answer"
                     android:textSize="20sp"
                     android:freezesText="true"/>
-                <Button
-                    android:id="@+id/button_text_answer"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Confirm"
-                    android:layout_marginTop="32dp"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginEnd="32dp"
-                    android:layout_below="@+id/edit_text_answer"
-                    android:freezesText="true"/>
             </RelativeLayout>
         </RelativeLayout>
-
+        <Button
+            android:id="@+id/button_answer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Confirm"
+            android:layout_marginTop="32dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:freezesText="true"
+            android:layout_below="@+id/layout_answers"/>
     </RelativeLayout>
 
 </ScrollView>

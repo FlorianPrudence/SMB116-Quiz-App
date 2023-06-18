@@ -42,7 +42,7 @@ public class QuizActivity extends AppCompatActivity {
     private static final String KEY_QUESTION_LIST = "keyQuestionList";
 
     private TextView textViewQuestion, textViewScore, textViewQuestionCount, textViewCountDown;
-    private Button btnAnswerA, btnAnswerB, btnAnswerC, btnAnswerD, btnAnswerE, btnAnswerF, btnAnswerG, btnAnswerH, btnAnswerI, btnAnswerJ, btnAnswerText, btnMultipleAnswer;
+    private Button btnAnswerA, btnAnswerB, btnAnswerC, btnAnswerD, btnAnswerE, btnAnswerF, btnAnswer;
     private CheckBox cbAnswerA, cbAnswerB, cbAnswerC, cbAnswerD, cbAnswerE, cbAnswerF, cbAnswerG, cbAnswerH, cbAnswerI, cbAnswerJ;
     private EditText textAnswer;
     private RelativeLayout btnAnswerLayout, textAnswerLayout, multipleAnswerLayout;
@@ -73,12 +73,7 @@ public class QuizActivity extends AppCompatActivity {
         btnAnswerD = findViewById(R.id.button_answerD);
         btnAnswerE = findViewById(R.id.button_answerE);
         btnAnswerF = findViewById(R.id.button_answerF);
-        btnAnswerG = findViewById(R.id.button_answerG);
-        btnAnswerH = findViewById(R.id.button_answerH);
-        btnAnswerI = findViewById(R.id.button_answerI);
-        btnAnswerJ = findViewById(R.id.button_answerJ);
-        btnAnswerText = findViewById(R.id.button_text_answer);
-        btnMultipleAnswer = findViewById(R.id.button_multiple_answer);
+        btnAnswer = findViewById(R.id.button_answer);
 
         cbAnswerA = findViewById(R.id.checkboxA);
         cbAnswerB = findViewById(R.id.checkboxB);
@@ -118,18 +113,17 @@ public class QuizActivity extends AppCompatActivity {
                     btnAnswerLayout.setVisibility(View.INVISIBLE);
                     textAnswerLayout.setVisibility(View.VISIBLE);
                     textAnswer.setInputType(InputType.TYPE_CLASS_TEXT);
-                    btnAnswerText.setText(getString(R.string.validate));
+                    btnAnswer.setText(getString(R.string.validate));
                     break;
                 case SingleChoice:
                     btnAnswerLayout.setVisibility(View.VISIBLE);
                     textAnswerLayout.setVisibility(View.INVISIBLE);
                     break;
             }
-
             if (!answered) {
                 startCountDown();
             } else {
-                btnAnswerText.setText(getString(R.string.nextQuestion));
+                btnAnswer.setText(getString(R.string.nextQuestion));
                 updateCountDownText();
                 showSolution();
             }
@@ -138,23 +132,15 @@ public class QuizActivity extends AppCompatActivity {
         btnAnswerA.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(answered)
-                    showNextQuestion();
-                else {
-                    answer = "A";
-                    checkAnswer();
-                }
+                answer = "A";
+                checkAnswer();
             }
         });
         btnAnswerB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(answered)
-                    showNextQuestion();
-                else {
-                    answer = "B";
-                    checkAnswer();
-                }
+                answer = "B";
+                checkAnswer();
             }
         });
         btnAnswerC.setOnClickListener(new View.OnClickListener() {
@@ -171,101 +157,41 @@ public class QuizActivity extends AppCompatActivity {
         btnAnswerD.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(answered)
-                    showNextQuestion();
-                else {
-                    answer = "D";
-                    checkAnswer();
-                }
+                answer = "D";
+                checkAnswer();
             }
         });
         btnAnswerE.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(answered)
-                    showNextQuestion();
-                else {
-                    answer = "E";
-                    checkAnswer();
-                }
+                answer = "E";
+                checkAnswer();
             }
         });
         btnAnswerF.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(answered)
-                    showNextQuestion();
-                else {
-                    answer = "F";
-                    checkAnswer();
-                }
+                answer = "F";
+                checkAnswer();
             }
         });
-        btnAnswerG.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(answered)
-                    showNextQuestion();
-                else {
-                    answer = "G";
-                    checkAnswer();
-                }
-            }
-        });
-        btnAnswerH.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(answered)
-                    showNextQuestion();
-                else {
-                    answer = "H";
-                    checkAnswer();
-                }
-            }
-        });
-        btnAnswerI.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(answered)
-                    showNextQuestion();
-                else {
-                    answer = "I";
-                    checkAnswer();
-                }
-            }
-        });
-        btnAnswerJ.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(answered)
-                    showNextQuestion();
-                else {
-                    answer = "J";
-                    checkAnswer();
-                }
-            }
-        });
-        btnMultipleAnswer.setOnClickListener(new View.OnClickListener() {
+        btnAnswer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(answered) {
                     showNextQuestion();
                 }
                 else {
-                    answer = parseMultipleAnswer();
-                    checkAnswer();
-                }
-            }
-        });
-        btnAnswerText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                if(answered)
-                    showNextQuestion();
-                else {
-                    answer = textAnswer.getText().toString().trim();
+                    switch (currentQuestion.getType()) {
+                        case Text:
+                            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                            answer = textAnswer.getText().toString().trim();
+                            break;
+                        case MultipleChoice:
+                            answer = parseMultipleAnswer();
+                            break;
+                    }
                     checkAnswer();
                 }
             }
@@ -273,16 +199,24 @@ public class QuizActivity extends AppCompatActivity {
     }
 
     private void showNextQuestion() {
+        cbAnswerA.setChecked(false);
+        cbAnswerB.setChecked(false);
+        cbAnswerC.setChecked(false);
+        cbAnswerD.setChecked(false);
+        cbAnswerE.setChecked(false);
+        cbAnswerF.setChecked(false);
+        cbAnswerG.setChecked(false);
+        cbAnswerH.setChecked(false);
+        cbAnswerI.setChecked(false);
+        cbAnswerJ.setChecked(false);
+
         btnAnswerA.setTextColor(textColorDefaultBtn);
         btnAnswerB.setTextColor(textColorDefaultBtn);
         btnAnswerC.setTextColor(textColorDefaultBtn);
         btnAnswerD.setTextColor(textColorDefaultBtn);
         btnAnswerE.setTextColor(textColorDefaultBtn);
         btnAnswerF.setTextColor(textColorDefaultBtn);
-        btnAnswerG.setTextColor(textColorDefaultBtn);
-        btnAnswerH.setTextColor(textColorDefaultBtn);
-        btnAnswerI.setTextColor(textColorDefaultBtn);
-        btnAnswerJ.setTextColor(textColorDefaultBtn);
+
         cbAnswerA.setTextColor(textColorDefaultCd);
         cbAnswerB.setTextColor(textColorDefaultCd);
         cbAnswerC.setTextColor(textColorDefaultCd);
@@ -293,6 +227,7 @@ public class QuizActivity extends AppCompatActivity {
         cbAnswerH.setTextColor(textColorDefaultCd);
         cbAnswerI.setTextColor(textColorDefaultCd);
         cbAnswerJ.setTextColor(textColorDefaultCd);
+
         textAnswer.setTextColor(textColorDefaultCd);
         textAnswer.getText().clear();
 
@@ -300,16 +235,19 @@ public class QuizActivity extends AppCompatActivity {
             currentQuestion = questionList.get(questionCounter);
 
             textViewQuestion.setText(currentQuestion.getQuestion());
-
+            btnAnswer.setText(getString(R.string.validate));
             switch (currentQuestion.getType()) {
                 case Text:
+                    btnAnswer.setEnabled(true);
+                    btnAnswer.setVisibility(View.VISIBLE);
                     btnAnswerLayout.setVisibility(View.INVISIBLE);
                     multipleAnswerLayout.setVisibility(View.INVISIBLE);
                     textAnswerLayout.setVisibility(View.VISIBLE);
                     textAnswer.setInputType(InputType.TYPE_CLASS_TEXT);
-                    btnAnswerText.setText(getString(R.string.validate));
                     break;
                 case SingleChoice:
+                    btnAnswer.setEnabled(false);
+                    btnAnswer.setVisibility(View.INVISIBLE);
                     btnAnswerLayout.setVisibility(View.VISIBLE);
                     textAnswerLayout.setVisibility(View.INVISIBLE);
                     multipleAnswerLayout.setVisibility(View.INVISIBLE);
@@ -320,7 +258,7 @@ public class QuizActivity extends AppCompatActivity {
                         btnAnswerA.setText(currentQuestion.getOptionA());
                     } else {
                         btnAnswerA.setVisibility(View.INVISIBLE);
-                        btnAnswerA.setEnabled(false);
+                        btnAnswerA.setText(null);
                     }
 
                     if (currentQuestion.getOptionB() != null) {
@@ -329,7 +267,7 @@ public class QuizActivity extends AppCompatActivity {
                         btnAnswerB.setText(currentQuestion.getOptionB());
                     } else {
                         btnAnswerB.setVisibility(View.INVISIBLE);
-                        btnAnswerB.setEnabled(false);
+                        btnAnswerB.setText(null);
                     }
 
                     if (currentQuestion.getOptionC() != null) {
@@ -338,7 +276,7 @@ public class QuizActivity extends AppCompatActivity {
                         btnAnswerC.setText(currentQuestion.getOptionC());
                     } else {
                         btnAnswerC.setVisibility(View.INVISIBLE);
-                        btnAnswerC.setEnabled(false);
+                        btnAnswerC.setText(null);
                     }
 
                     if (currentQuestion.getOptionD() != null) {
@@ -347,7 +285,7 @@ public class QuizActivity extends AppCompatActivity {
                         btnAnswerD.setText(currentQuestion.getOptionD());
                     } else {
                         btnAnswerD.setVisibility(View.INVISIBLE);
-                        btnAnswerD.setEnabled(false);
+                        btnAnswerD.setText(null);
                     }
 
                     if (currentQuestion.getOptionE() != null) {
@@ -356,7 +294,7 @@ public class QuizActivity extends AppCompatActivity {
                         btnAnswerE.setText(currentQuestion.getOptionE());
                     } else {
                         btnAnswerE.setVisibility(View.INVISIBLE);
-                        btnAnswerE.setEnabled(false);
+                        btnAnswerE.setText(null);
                     }
 
                     if (currentQuestion.getOptionF() != null) {
@@ -365,46 +303,13 @@ public class QuizActivity extends AppCompatActivity {
                         btnAnswerF.setText(currentQuestion.getOptionF());
                     } else {
                         btnAnswerF.setVisibility(View.INVISIBLE);
-                        btnAnswerF.setEnabled(false);
+                        btnAnswerF.setText(null);
                     }
 
-                    if (currentQuestion.getOptionG() != null) {
-                        btnAnswerG.setVisibility(View.VISIBLE);
-                        btnAnswerG.setEnabled(true);
-                        btnAnswerG.setText(currentQuestion.getOptionG());
-                    } else {
-                        btnAnswerG.setVisibility(View.INVISIBLE);
-                        btnAnswerG.setEnabled(false);
-                    }
-
-                    if (currentQuestion.getOptionH() != null) {
-                        btnAnswerH.setVisibility(View.VISIBLE);
-                        btnAnswerH.setEnabled(true);
-                        btnAnswerH.setText(currentQuestion.getOptionH());
-                    } else {
-                        btnAnswerH.setVisibility(View.INVISIBLE);
-                        btnAnswerH.setEnabled(false);
-                    }
-
-                    if (currentQuestion.getOptionI() != null) {
-                        btnAnswerI.setVisibility(View.VISIBLE);
-                        btnAnswerI.setEnabled(true);
-                        btnAnswerI.setText(currentQuestion.getOptionI());
-                    } else {
-                        btnAnswerI.setVisibility(View.INVISIBLE);
-                        btnAnswerI.setEnabled(false);
-                    }
-
-                    if (currentQuestion.getOptionJ() != null) {
-                        btnAnswerJ.setVisibility(View.VISIBLE);
-                        btnAnswerJ.setEnabled(true);
-                        btnAnswerJ.setText(currentQuestion.getOptionJ());
-                    } else {
-                        btnAnswerJ.setVisibility(View.INVISIBLE);
-                        btnAnswerJ.setEnabled(false);
-                    }
                     break;
                 case MultipleChoice:
+                    btnAnswer.setEnabled(true);
+                    btnAnswer.setVisibility(View.VISIBLE);
                     btnAnswerLayout.setVisibility(View.INVISIBLE);
                     textAnswerLayout.setVisibility(View.INVISIBLE);
                     multipleAnswerLayout.setVisibility(View.VISIBLE);
@@ -415,9 +320,8 @@ public class QuizActivity extends AppCompatActivity {
                         cbAnswerA.setText(currentQuestion.getOptionA());
                     } else {
                         cbAnswerA.setVisibility(View.INVISIBLE);
-                        cbAnswerA.setEnabled(false);
+                        cbAnswerA.setText(null);
                     }
-                    cbAnswerA.setChecked(false);
 
                     if (currentQuestion.getOptionB() != null) {
                         cbAnswerB.setVisibility(View.VISIBLE);
@@ -425,9 +329,8 @@ public class QuizActivity extends AppCompatActivity {
                         cbAnswerB.setText(currentQuestion.getOptionB());
                     } else {
                         cbAnswerB.setVisibility(View.INVISIBLE);
-                        cbAnswerB.setEnabled(false);
+                        cbAnswerB.setText(null);
                     }
-                    cbAnswerB.setChecked(false);
 
                     if (currentQuestion.getOptionC() != null) {
                         cbAnswerC.setVisibility(View.VISIBLE);
@@ -435,9 +338,8 @@ public class QuizActivity extends AppCompatActivity {
                         cbAnswerC.setText(currentQuestion.getOptionC());
                     } else {
                         cbAnswerC.setVisibility(View.INVISIBLE);
-                        cbAnswerC.setEnabled(false);
+                        cbAnswerC.setText(null);
                     }
-                    cbAnswerC.setChecked(false);
 
                     if (currentQuestion.getOptionD() != null) {
                         cbAnswerD.setVisibility(View.VISIBLE);
@@ -445,9 +347,8 @@ public class QuizActivity extends AppCompatActivity {
                         cbAnswerD.setText(currentQuestion.getOptionD());
                     } else {
                         cbAnswerD.setVisibility(View.INVISIBLE);
-                        cbAnswerD.setEnabled(false);
+                        cbAnswerD.setText(null);
                     }
-                    cbAnswerD.setChecked(false);
 
                     if (currentQuestion.getOptionE() != null) {
                         cbAnswerE.setVisibility(View.VISIBLE);
@@ -455,9 +356,8 @@ public class QuizActivity extends AppCompatActivity {
                         cbAnswerE.setText(currentQuestion.getOptionE());
                     } else {
                         cbAnswerE.setVisibility(View.INVISIBLE);
-                        cbAnswerE.setEnabled(false);
+                        cbAnswerE.setText(null);
                     }
-                    cbAnswerE.setChecked(false);
 
                     if (currentQuestion.getOptionF() != null) {
                         cbAnswerF.setVisibility(View.VISIBLE);
@@ -465,9 +365,8 @@ public class QuizActivity extends AppCompatActivity {
                         cbAnswerF.setText(currentQuestion.getOptionF());
                     } else {
                         cbAnswerF.setVisibility(View.INVISIBLE);
-                        cbAnswerF.setEnabled(false);
+                        cbAnswerF.setText(null);
                     }
-                    cbAnswerF.setChecked(false);
 
                     if (currentQuestion.getOptionG() != null) {
                         cbAnswerG.setVisibility(View.VISIBLE);
@@ -475,9 +374,8 @@ public class QuizActivity extends AppCompatActivity {
                         cbAnswerG.setText(currentQuestion.getOptionG());
                     } else {
                         cbAnswerG.setVisibility(View.INVISIBLE);
-                        cbAnswerG.setEnabled(false);
+                        cbAnswerG.setText(null);
                     }
-                    cbAnswerG.setChecked(false);
 
                     if (currentQuestion.getOptionH() != null) {
                         cbAnswerH.setVisibility(View.VISIBLE);
@@ -485,9 +383,8 @@ public class QuizActivity extends AppCompatActivity {
                         cbAnswerH.setText(currentQuestion.getOptionH());
                     } else {
                         cbAnswerH.setVisibility(View.INVISIBLE);
-                        cbAnswerH.setEnabled(false);
+                        cbAnswerH.setText(null);
                     }
-                    cbAnswerH.setChecked(false);
 
                     if (currentQuestion.getOptionI() != null) {
                         cbAnswerI.setVisibility(View.VISIBLE);
@@ -495,9 +392,8 @@ public class QuizActivity extends AppCompatActivity {
                         cbAnswerI.setText(currentQuestion.getOptionI());
                     } else {
                         cbAnswerI.setVisibility(View.INVISIBLE);
-                        cbAnswerI.setEnabled(false);
+                        cbAnswerI.setText(null);
                     }
-                    cbAnswerI.setChecked(false);
 
                     if (currentQuestion.getOptionJ() != null) {
                         cbAnswerJ.setVisibility(View.VISIBLE);
@@ -505,11 +401,10 @@ public class QuizActivity extends AppCompatActivity {
                         cbAnswerJ.setText(currentQuestion.getOptionJ());
                     } else {
                         cbAnswerJ.setVisibility(View.INVISIBLE);
-                        cbAnswerJ.setEnabled(false);
+                        cbAnswerJ.setText(null);
                     }
-                    cbAnswerJ.setChecked(false);
 
-                    Toast.makeText(this, currentQuestion.getCorrectAnswer(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(this, currentQuestion.getCorrectAnswer(), Toast.LENGTH_SHORT).show();
                     break;
             }
 
@@ -536,6 +431,14 @@ public class QuizActivity extends AppCompatActivity {
             public void onFinish() {
                 timeLeftInMillis = 0;
                 updateCountDownText();
+                switch (currentQuestion.getType()) {
+                    case Text:
+                        answer = textAnswer.getText().toString().trim();
+                        break;
+                    case MultipleChoice:
+                        answer = parseMultipleAnswer();
+                        break;
+                }
                 checkAnswer();
             }
         }.start();
@@ -569,6 +472,12 @@ public class QuizActivity extends AppCompatActivity {
 
     private void showSolution() {
         String correctAnswer = currentQuestion.getCorrectAnswer();
+        btnAnswer.setVisibility(View.VISIBLE);
+        btnAnswer.setEnabled(true);
+        if (questionCounter < questionCountTotal)
+            btnAnswer.setText(getString(R.string.nextQuestion));
+        else
+            btnAnswer.setText(getString(R.string.finish));
         switch (currentQuestion.getType()) {
             case Text:
                 textAnswer.setInputType(InputType.TYPE_NULL);
@@ -578,10 +487,6 @@ public class QuizActivity extends AppCompatActivity {
                     textAnswer.setTextColor(Color.RED);
                     textAnswer.setText(correctAnswer);
                 }
-                if (questionCounter < questionCountTotal)
-                    btnAnswerText.setText(getString(R.string.nextQuestion));
-                else
-                    btnAnswerText.setText(getString(R.string.finish));
                 break;
             case SingleChoice:
                 btnAnswerA.setTextColor(Color.RED);
@@ -590,10 +495,14 @@ public class QuizActivity extends AppCompatActivity {
                 btnAnswerD.setTextColor(Color.RED);
                 btnAnswerE.setTextColor(Color.RED);
                 btnAnswerF.setTextColor(Color.RED);
-                btnAnswerG.setTextColor(Color.RED);
-                btnAnswerH.setTextColor(Color.RED);
-                btnAnswerI.setTextColor(Color.RED);
-                btnAnswerJ.setTextColor(Color.RED);
+
+                btnAnswerA.setEnabled(false);
+                btnAnswerB.setEnabled(false);
+                btnAnswerC.setEnabled(false);
+                btnAnswerD.setEnabled(false);
+                btnAnswerE.setEnabled(false);
+                btnAnswerF.setEnabled(false);
+
                 switch (currentQuestion.getCorrectAnswer()) {
                     case "A":
                         btnAnswerA.setTextColor(Color.GREEN);
@@ -613,18 +522,6 @@ public class QuizActivity extends AppCompatActivity {
                     case "F":
                         btnAnswerF.setTextColor(Color.GREEN);
                         break;
-                    case "G":
-                        btnAnswerG.setTextColor(Color.GREEN);
-                        break;
-                    case "H":
-                        btnAnswerH.setTextColor(Color.GREEN);
-                        break;
-                    case "I":
-                        btnAnswerI.setTextColor(Color.GREEN);
-                        break;
-                    case "J":
-                        btnAnswerJ.setTextColor(Color.GREEN);
-                        break;
                 }
                 break;
             case MultipleChoice:
@@ -638,6 +535,18 @@ public class QuizActivity extends AppCompatActivity {
                 cbAnswerH.setTextColor(Color.RED);
                 cbAnswerI.setTextColor(Color.RED);
                 cbAnswerJ.setTextColor(Color.RED);
+
+                cbAnswerA.setEnabled(false);
+                cbAnswerB.setEnabled(false);
+                cbAnswerC.setEnabled(false);
+                cbAnswerD.setEnabled(false);
+                cbAnswerE.setEnabled(false);
+                cbAnswerF.setEnabled(false);
+                cbAnswerG.setEnabled(false);
+                cbAnswerH.setEnabled(false);
+                cbAnswerI.setEnabled(false);
+                cbAnswerJ.setEnabled(false);
+
                 String cAnswer = currentQuestion.getCorrectAnswer();
 
                 if(cAnswer.contains("A"))
@@ -664,13 +573,6 @@ public class QuizActivity extends AppCompatActivity {
                     cbAnswerG.setTextColor(Color.GREEN);
                 if(cAnswer.contains("J"))
                     cbAnswerH.setTextColor(Color.GREEN);
-
-                if (questionCounter < questionCountTotal)
-                    btnMultipleAnswer.setText(getString(R.string.nextQuestion));
-                else
-                    btnMultipleAnswer.setText(getString(R.string.finish));
-                break;
-
         }
     }
 
@@ -710,7 +612,7 @@ public class QuizActivity extends AppCompatActivity {
         if(blr.length() > 0 && blr.charAt(blr.length() - 1) == ';')
             blr.deleteCharAt(blr.length() - 1);
 
-        Toast.makeText(this, blr.toString(), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, blr.toString(), Toast.LENGTH_SHORT).show();
         return blr.toString();
     }
 
