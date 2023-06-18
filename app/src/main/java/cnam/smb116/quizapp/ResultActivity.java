@@ -11,6 +11,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 
+import cnam.smb116.quizapp.Helpers.QuizDBHelper;
+import cnam.smb116.quizapp.Model.Result;
+
 public class ResultActivity extends AppCompatActivity {
     private ListView listView;
 

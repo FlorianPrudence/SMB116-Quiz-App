@@ -1,4 +1,4 @@
-package cnam.smb116.quizapp;
+package cnam.smb116.quizapp.Model;
 
 import android.os.Parcel;
 import android.os.Parcelable;

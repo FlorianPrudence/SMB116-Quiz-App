@@ -25,6 +25,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Locale;
 
+import cnam.smb116.quizapp.Helpers.QuizDBHelper;
+import cnam.smb116.quizapp.Model.Question;
+
 public class QuizActivity extends AppCompatActivity {
 
     public static final String EXTRA_SCORE = "extraScore";
@@ -115,7 +118,7 @@ public class QuizActivity extends AppCompatActivity {
                     btnAnswerLayout.setVisibility(View.INVISIBLE);
                     textAnswerLayout.setVisibility(View.VISIBLE);
                     textAnswer.setInputType(InputType.TYPE_CLASS_TEXT);
-                    btnAnswerText.setText("Confirm");
+                    btnAnswerText.setText(getString(R.string.validate));
                     break;
                 case SingleChoice:
                     btnAnswerLayout.setVisibility(View.VISIBLE);
@@ -126,7 +129,7 @@ public class QuizActivity extends AppCompatActivity {
             if (!answered) {
                 startCountDown();
             } else {
-                btnAnswerText.setText("Next question");
+                btnAnswerText.setText(getString(R.string.nextQuestion));
                 updateCountDownText();
                 showSolution();
             }
@@ -304,7 +307,7 @@ public class QuizActivity extends AppCompatActivity {
                     multipleAnswerLayout.setVisibility(View.INVISIBLE);
                     textAnswerLayout.setVisibility(View.VISIBLE);
                     textAnswer.setInputType(InputType.TYPE_CLASS_TEXT);
-                    btnAnswerText.setText("Confirm");
+                    btnAnswerText.setText(getString(R.string.validate));
                     break;
                 case SingleChoice:
                     btnAnswerLayout.setVisibility(View.VISIBLE);
@@ -576,9 +579,9 @@ public class QuizActivity extends AppCompatActivity {
                     textAnswer.setText(correctAnswer);
                 }
                 if (questionCounter < questionCountTotal)
-                    btnAnswerText.setText("Next Question");
+                    btnAnswerText.setText(getString(R.string.nextQuestion));
                 else
-                    btnAnswerText.setText("Finish");
+                    btnAnswerText.setText(getString(R.string.finish));
                 break;
             case SingleChoice:
                 btnAnswerA.setTextColor(Color.RED);
@@ -663,9 +666,9 @@ public class QuizActivity extends AppCompatActivity {
                     cbAnswerH.setTextColor(Color.GREEN);
 
                 if (questionCounter < questionCountTotal)
-                    btnMultipleAnswer.setText("Next Question");
+                    btnMultipleAnswer.setText(getString(R.string.nextQuestion));
                 else
-                    btnMultipleAnswer.setText("Finish");
+                    btnMultipleAnswer.setText(getString(R.string.finish));
                 break;
 
         }

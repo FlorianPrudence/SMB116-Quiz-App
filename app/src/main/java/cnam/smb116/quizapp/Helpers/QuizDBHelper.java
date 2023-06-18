@@ -1,4 +1,4 @@
-package cnam.smb116.quizapp;
+package cnam.smb116.quizapp.Helpers;
 
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
@@ -9,7 +9,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
 
-import cnam.smb116.quizapp.QuestionContract.QuestionsTable;
+import cnam.smb116.quizapp.Contracts.QuestionContract;
+import cnam.smb116.quizapp.Contracts.QuestionContract.QuestionsTable;
+import cnam.smb116.quizapp.Contracts.ResultContract;
+import cnam.smb116.quizapp.Model.Question;
+import cnam.smb116.quizapp.Model.Result;
 
 public class QuizDBHelper extends SQLiteOpenHelper {
     protected static final String DATABASE_NAME = "QuizApp.db";

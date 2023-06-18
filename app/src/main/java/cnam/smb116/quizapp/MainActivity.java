@@ -15,6 +15,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import cnam.smb116.quizapp.Helpers.MinMaxFilter;
+import cnam.smb116.quizapp.Helpers.QuizDBHelper;
+
 public class MainActivity extends AppCompatActivity {
     public static final String KEY_HIGHSCORE = "quizzHighScore";
     public static final String QUESTION_QTY = "quizzQuestionQty";
@@ -59,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
                     int questionQty = Integer.parseInt(editTextQuestionQty.getText().toString());
                     startQuiz(questionQty);
                 } else {
-                    Toast.makeText(MainActivity.this, "Please input a valid number of questions", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, getString(R.string.validNumber), Toast.LENGTH_SHORT).show();
                 }
             }
         });

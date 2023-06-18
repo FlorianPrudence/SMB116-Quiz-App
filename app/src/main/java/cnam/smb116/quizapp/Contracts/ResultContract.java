@@ -1,8 +1,8 @@
-package cnam.smb116.quizapp;
+package cnam.smb116.quizapp.Contracts;
 
 import android.provider.BaseColumns;
 
-public class ResultContract {
+public final class ResultContract {
 
     public ResultContract() {
     }
