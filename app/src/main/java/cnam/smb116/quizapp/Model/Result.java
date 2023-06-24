@@ -8,6 +8,7 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.util.Date;
 
 public class Result implements Parcelable {
@@ -83,6 +84,7 @@ public class Result implements Parcelable {
     public String toString() {
         DateFormat df = getDateTimeInstance();
         Date resultDate = new Date(time);
-        return df.format(resultDate) + "\nScore : " + correctAnswers + "/" + totalQuestions;
+        double percentRight = (double) correctAnswers / totalQuestions * 100;
+        return df.format(resultDate) + "\nScore : " + correctAnswers + "/" + totalQuestions + ", " + new DecimalFormat("#.##").format(percentRight) + "%";
     }
 }
