@@ -108,18 +108,7 @@ public class QuizActivity extends AppCompatActivity {
             timeLeftInMillis = savedInstanceState.getLong(KEY_MILLIS_LEFT);
             answered = savedInstanceState.getBoolean(KEY_ANSWERED);
             answer = savedInstanceState.getString(KEY_ANSWER);
-            switch (currentQuestion.getType()) {
-                case Text:
-                    btnAnswerLayout.setVisibility(View.INVISIBLE);
-                    textAnswerLayout.setVisibility(View.VISIBLE);
-                    textAnswer.setInputType(InputType.TYPE_CLASS_TEXT);
-                    btnAnswer.setText(getString(R.string.validate));
-                    break;
-                case SingleChoice:
-                    btnAnswerLayout.setVisibility(View.VISIBLE);
-                    textAnswerLayout.setVisibility(View.INVISIBLE);
-                    break;
-            }
+            handleQuestionDisplaying();
             if (!answered) {
                 startCountDown();
             } else {
@@ -236,177 +225,7 @@ public class QuizActivity extends AppCompatActivity {
 
             textViewQuestion.setText(currentQuestion.getQuestion());
             btnAnswer.setText(getString(R.string.validate));
-            switch (currentQuestion.getType()) {
-                case Text:
-                    btnAnswer.setEnabled(true);
-                    btnAnswer.setVisibility(View.VISIBLE);
-                    btnAnswerLayout.setVisibility(View.INVISIBLE);
-                    multipleAnswerLayout.setVisibility(View.INVISIBLE);
-                    textAnswerLayout.setVisibility(View.VISIBLE);
-                    textAnswer.setInputType(InputType.TYPE_CLASS_TEXT);
-                    break;
-                case SingleChoice:
-                    btnAnswer.setEnabled(false);
-                    btnAnswer.setVisibility(View.INVISIBLE);
-                    btnAnswerLayout.setVisibility(View.VISIBLE);
-                    textAnswerLayout.setVisibility(View.INVISIBLE);
-                    multipleAnswerLayout.setVisibility(View.INVISIBLE);
-
-                    if (currentQuestion.getOptionA() != null) {
-                        btnAnswerA.setVisibility(View.VISIBLE);
-                        btnAnswerA.setEnabled(true);
-                        btnAnswerA.setText(currentQuestion.getOptionA());
-                    } else {
-                        btnAnswerA.setVisibility(View.INVISIBLE);
-                        btnAnswerA.setText(null);
-                    }
-
-                    if (currentQuestion.getOptionB() != null) {
-                        btnAnswerB.setVisibility(View.VISIBLE);
-                        btnAnswerB.setEnabled(true);
-                        btnAnswerB.setText(currentQuestion.getOptionB());
-                    } else {
-                        btnAnswerB.setVisibility(View.INVISIBLE);
-                        btnAnswerB.setText(null);
-                    }
-
-                    if (currentQuestion.getOptionC() != null) {
-                        btnAnswerC.setVisibility(View.VISIBLE);
-                        btnAnswerC.setEnabled(true);
-                        btnAnswerC.setText(currentQuestion.getOptionC());
-                    } else {
-                        btnAnswerC.setVisibility(View.INVISIBLE);
-                        btnAnswerC.setText(null);
-                    }
-
-                    if (currentQuestion.getOptionD() != null) {
-                        btnAnswerD.setVisibility(View.VISIBLE);
-                        btnAnswerD.setEnabled(true);
-                        btnAnswerD.setText(currentQuestion.getOptionD());
-                    } else {
-                        btnAnswerD.setVisibility(View.INVISIBLE);
-                        btnAnswerD.setText(null);
-                    }
-
-                    if (currentQuestion.getOptionE() != null) {
-                        btnAnswerE.setVisibility(View.VISIBLE);
-                        btnAnswerE.setEnabled(true);
-                        btnAnswerE.setText(currentQuestion.getOptionE());
-                    } else {
-                        btnAnswerE.setVisibility(View.INVISIBLE);
-                        btnAnswerE.setText(null);
-                    }
-
-                    if (currentQuestion.getOptionF() != null) {
-                        btnAnswerF.setVisibility(View.VISIBLE);
-                        btnAnswerF.setEnabled(true);
-                        btnAnswerF.setText(currentQuestion.getOptionF());
-                    } else {
-                        btnAnswerF.setVisibility(View.INVISIBLE);
-                        btnAnswerF.setText(null);
-                    }
-
-                    break;
-                case MultipleChoice:
-                    btnAnswer.setEnabled(true);
-                    btnAnswer.setVisibility(View.VISIBLE);
-                    btnAnswerLayout.setVisibility(View.INVISIBLE);
-                    textAnswerLayout.setVisibility(View.INVISIBLE);
-                    multipleAnswerLayout.setVisibility(View.VISIBLE);
-
-                    if (currentQuestion.getOptionA() != null) {
-                        cbAnswerA.setVisibility(View.VISIBLE);
-                        cbAnswerA.setEnabled(true);
-                        cbAnswerA.setText(currentQuestion.getOptionA());
-                    } else {
-                        cbAnswerA.setVisibility(View.INVISIBLE);
-                        cbAnswerA.setText(null);
-                    }
-
-                    if (currentQuestion.getOptionB() != null) {
-                        cbAnswerB.setVisibility(View.VISIBLE);
-                        cbAnswerB.setEnabled(true);
-                        cbAnswerB.setText(currentQuestion.getOptionB());
-                    } else {
-                        cbAnswerB.setVisibility(View.INVISIBLE);
-                        cbAnswerB.setText(null);
-                    }
-
-                    if (currentQuestion.getOptionC() != null) {
-                        cbAnswerC.setVisibility(View.VISIBLE);
-                        cbAnswerC.setEnabled(true);
-                        cbAnswerC.setText(currentQuestion.getOptionC());
-                    } else {
-                        cbAnswerC.setVisibility(View.INVISIBLE);
-                        cbAnswerC.setText(null);
-                    }
-
-                    if (currentQuestion.getOptionD() != null) {
-                        cbAnswerD.setVisibility(View.VISIBLE);
-                        cbAnswerD.setEnabled(true);
-                        cbAnswerD.setText(currentQuestion.getOptionD());
-                    } else {
-                        cbAnswerD.setVisibility(View.INVISIBLE);
-                        cbAnswerD.setText(null);
-                    }
-
-                    if (currentQuestion.getOptionE() != null) {
-                        cbAnswerE.setVisibility(View.VISIBLE);
-                        cbAnswerE.setEnabled(true);
-                        cbAnswerE.setText(currentQuestion.getOptionE());
-                    } else {
-                        cbAnswerE.setVisibility(View.INVISIBLE);
-                        cbAnswerE.setText(null);
-                    }
-
-                    if (currentQuestion.getOptionF() != null) {
-                        cbAnswerF.setVisibility(View.VISIBLE);
-                        cbAnswerF.setEnabled(true);
-                        cbAnswerF.setText(currentQuestion.getOptionF());
-                    } else {
-                        cbAnswerF.setVisibility(View.INVISIBLE);
-                        cbAnswerF.setText(null);
-                    }
-
-                    if (currentQuestion.getOptionG() != null) {
-                        cbAnswerG.setVisibility(View.VISIBLE);
-                        cbAnswerG.setEnabled(true);
-                        cbAnswerG.setText(currentQuestion.getOptionG());
-                    } else {
-                        cbAnswerG.setVisibility(View.INVISIBLE);
-                        cbAnswerG.setText(null);
-                    }
-
-                    if (currentQuestion.getOptionH() != null) {
-                        cbAnswerH.setVisibility(View.VISIBLE);
-                        cbAnswerH.setEnabled(true);
-                        cbAnswerH.setText(currentQuestion.getOptionH());
-                    } else {
-                        cbAnswerH.setVisibility(View.INVISIBLE);
-                        cbAnswerH.setText(null);
-                    }
-
-                    if (currentQuestion.getOptionI() != null) {
-                        cbAnswerI.setVisibility(View.VISIBLE);
-                        cbAnswerI.setEnabled(true);
-                        cbAnswerI.setText(currentQuestion.getOptionI());
-                    } else {
-                        cbAnswerI.setVisibility(View.INVISIBLE);
-                        cbAnswerI.setText(null);
-                    }
-
-                    if (currentQuestion.getOptionJ() != null) {
-                        cbAnswerJ.setVisibility(View.VISIBLE);
-                        cbAnswerJ.setEnabled(true);
-                        cbAnswerJ.setText(currentQuestion.getOptionJ());
-                    } else {
-                        cbAnswerJ.setVisibility(View.INVISIBLE);
-                        cbAnswerJ.setText(null);
-                    }
-
-                    //Toast.makeText(this, currentQuestion.getCorrectAnswer(), Toast.LENGTH_SHORT).show();
-                    break;
-            }
+            handleQuestionDisplaying();
 
             questionCounter++;
             textViewQuestionCount.setText("Question: " + questionCounter + "/" + questionCountTotal);
@@ -416,6 +235,178 @@ public class QuizActivity extends AppCompatActivity {
             startCountDown();
         } else {
             finishQuiz();
+        }
+    }
+
+    private void handleQuestionDisplaying() {
+        switch (currentQuestion.getType()) {
+            case Text:
+                btnAnswer.setEnabled(true);
+                btnAnswer.setVisibility(View.VISIBLE);
+                btnAnswerLayout.setVisibility(View.INVISIBLE);
+                multipleAnswerLayout.setVisibility(View.INVISIBLE);
+                textAnswerLayout.setVisibility(View.VISIBLE);
+                textAnswer.setInputType(InputType.TYPE_CLASS_TEXT);
+                break;
+            case SingleChoice:
+                btnAnswer.setEnabled(false);
+                btnAnswer.setVisibility(View.INVISIBLE);
+                btnAnswerLayout.setVisibility(View.VISIBLE);
+                textAnswerLayout.setVisibility(View.INVISIBLE);
+                multipleAnswerLayout.setVisibility(View.INVISIBLE);
+
+                if (currentQuestion.getOptionA() != null) {
+                    btnAnswerA.setVisibility(View.VISIBLE);
+                    btnAnswerA.setEnabled(true);
+                    btnAnswerA.setText(currentQuestion.getOptionA());
+                } else {
+                    btnAnswerA.setVisibility(View.INVISIBLE);
+                    btnAnswerA.setText(null);
+                }
+
+                if (currentQuestion.getOptionB() != null) {
+                    btnAnswerB.setVisibility(View.VISIBLE);
+                    btnAnswerB.setEnabled(true);
+                    btnAnswerB.setText(currentQuestion.getOptionB());
+                } else {
+                    btnAnswerB.setVisibility(View.INVISIBLE);
+                    btnAnswerB.setText(null);
+                }
+
+                if (currentQuestion.getOptionC() != null) {
+                    btnAnswerC.setVisibility(View.VISIBLE);
+                    btnAnswerC.setEnabled(true);
+                    btnAnswerC.setText(currentQuestion.getOptionC());
+                } else {
+                    btnAnswerC.setVisibility(View.INVISIBLE);
+                    btnAnswerC.setText(null);
+                }
+
+                if (currentQuestion.getOptionD() != null) {
+                    btnAnswerD.setVisibility(View.VISIBLE);
+                    btnAnswerD.setEnabled(true);
+                    btnAnswerD.setText(currentQuestion.getOptionD());
+                } else {
+                    btnAnswerD.setVisibility(View.INVISIBLE);
+                    btnAnswerD.setText(null);
+                }
+
+                if (currentQuestion.getOptionE() != null) {
+                    btnAnswerE.setVisibility(View.VISIBLE);
+                    btnAnswerE.setEnabled(true);
+                    btnAnswerE.setText(currentQuestion.getOptionE());
+                } else {
+                    btnAnswerE.setVisibility(View.INVISIBLE);
+                    btnAnswerE.setText(null);
+                }
+
+                if (currentQuestion.getOptionF() != null) {
+                    btnAnswerF.setVisibility(View.VISIBLE);
+                    btnAnswerF.setEnabled(true);
+                    btnAnswerF.setText(currentQuestion.getOptionF());
+                } else {
+                    btnAnswerF.setVisibility(View.INVISIBLE);
+                    btnAnswerF.setText(null);
+                }
+
+                break;
+            case MultipleChoice:
+                btnAnswer.setEnabled(true);
+                btnAnswer.setVisibility(View.VISIBLE);
+                btnAnswerLayout.setVisibility(View.INVISIBLE);
+                textAnswerLayout.setVisibility(View.INVISIBLE);
+                multipleAnswerLayout.setVisibility(View.VISIBLE);
+
+                if (currentQuestion.getOptionA() != null) {
+                    cbAnswerA.setVisibility(View.VISIBLE);
+                    cbAnswerA.setEnabled(true);
+                    cbAnswerA.setText(currentQuestion.getOptionA());
+                } else {
+                    cbAnswerA.setVisibility(View.INVISIBLE);
+                    cbAnswerA.setText(null);
+                }
+
+                if (currentQuestion.getOptionB() != null) {
+                    cbAnswerB.setVisibility(View.VISIBLE);
+                    cbAnswerB.setEnabled(true);
+                    cbAnswerB.setText(currentQuestion.getOptionB());
+                } else {
+                    cbAnswerB.setVisibility(View.INVISIBLE);
+                    cbAnswerB.setText(null);
+                }
+
+                if (currentQuestion.getOptionC() != null) {
+                    cbAnswerC.setVisibility(View.VISIBLE);
+                    cbAnswerC.setEnabled(true);
+                    cbAnswerC.setText(currentQuestion.getOptionC());
+                } else {
+                    cbAnswerC.setVisibility(View.INVISIBLE);
+                    cbAnswerC.setText(null);
+                }
+
+                if (currentQuestion.getOptionD() != null) {
+                    cbAnswerD.setVisibility(View.VISIBLE);
+                    cbAnswerD.setEnabled(true);
+                    cbAnswerD.setText(currentQuestion.getOptionD());
+                } else {
+                    cbAnswerD.setVisibility(View.INVISIBLE);
+                    cbAnswerD.setText(null);
+                }
+
+                if (currentQuestion.getOptionE() != null) {
+                    cbAnswerE.setVisibility(View.VISIBLE);
+                    cbAnswerE.setEnabled(true);
+                    cbAnswerE.setText(currentQuestion.getOptionE());
+                } else {
+                    cbAnswerE.setVisibility(View.INVISIBLE);
+                    cbAnswerE.setText(null);
+                }
+
+                if (currentQuestion.getOptionF() != null) {
+                    cbAnswerF.setVisibility(View.VISIBLE);
+                    cbAnswerF.setEnabled(true);
+                    cbAnswerF.setText(currentQuestion.getOptionF());
+                } else {
+                    cbAnswerF.setVisibility(View.INVISIBLE);
+                    cbAnswerF.setText(null);
+                }
+
+                if (currentQuestion.getOptionG() != null) {
+                    cbAnswerG.setVisibility(View.VISIBLE);
+                    cbAnswerG.setEnabled(true);
+                    cbAnswerG.setText(currentQuestion.getOptionG());
+                } else {
+                    cbAnswerG.setVisibility(View.INVISIBLE);
+                    cbAnswerG.setText(null);
+                }
+
+                if (currentQuestion.getOptionH() != null) {
+                    cbAnswerH.setVisibility(View.VISIBLE);
+                    cbAnswerH.setEnabled(true);
+                    cbAnswerH.setText(currentQuestion.getOptionH());
+                } else {
+                    cbAnswerH.setVisibility(View.INVISIBLE);
+                    cbAnswerH.setText(null);
+                }
+
+                if (currentQuestion.getOptionI() != null) {
+                    cbAnswerI.setVisibility(View.VISIBLE);
+                    cbAnswerI.setEnabled(true);
+                    cbAnswerI.setText(currentQuestion.getOptionI());
+                } else {
+                    cbAnswerI.setVisibility(View.INVISIBLE);
+                    cbAnswerI.setText(null);
+                }
+
+                if (currentQuestion.getOptionJ() != null) {
+                    cbAnswerJ.setVisibility(View.VISIBLE);
+                    cbAnswerJ.setEnabled(true);
+                    cbAnswerJ.setText(currentQuestion.getOptionJ());
+                } else {
+                    cbAnswerJ.setVisibility(View.INVISIBLE);
+                    cbAnswerJ.setText(null);
+                }
+                break;
         }
     }
 

@@ -60,42 +60,48 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Answer A"
-                    android:freezesText="true"/>
+                    android:freezesText="true"
+                    android:saveEnabled="true"/>
                 <Button
                     android:id="@+id/button_answerB"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Answer B"
                     android:layout_below="@+id/button_answerA"
-                    android:freezesText="true"/>
+                    android:freezesText="true"
+                    android:saveEnabled="true"/>
                 <Button
                     android:id="@+id/button_answerC"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Answer C"
                     android:layout_below="@+id/button_answerB"
-                    android:freezesText="true"/>
+                    android:freezesText="true"
+                    android:saveEnabled="true"/>
                 <Button
                     android:id="@+id/button_answerD"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Answer D"
                     android:layout_below="@+id/button_answerC"
-                    android:freezesText="true"/>
+                    android:freezesText="true"
+                    android:saveEnabled="true"/>
                 <Button
                     android:id="@+id/button_answerE"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Answer E"
                     android:layout_below="@+id/button_answerD"
-                    android:freezesText="true"/>
+                    android:freezesText="true"
+                    android:saveEnabled="true"/>
                 <Button
                     android:id="@+id/button_answerF"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Answer F"
                     android:layout_below="@+id/button_answerE"
-                    android:freezesText="true"/>
+                    android:freezesText="true"
+                    android:saveEnabled="true"/>
             </RelativeLayout>
             <RelativeLayout
                 android:id="@+id/layout_multiple_answer"
@@ -105,61 +111,81 @@
                     android:id="@+id/checkboxA"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Answer A" />
+                    android:text="Answer A"
+                    android:freezesText="true"
+                    android:saveEnabled="true"/>
                 <CheckBox
                     android:id="@+id/checkboxB"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Answer B"
-                    android:layout_below="@+id/checkboxA"/>
+                    android:layout_below="@+id/checkboxA"
+                    android:freezesText="true"
+                    android:saveEnabled="true"/>
                 <CheckBox
                     android:id="@+id/checkboxC"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Answer C"
-                    android:layout_below="@+id/checkboxB"/>
+                    android:layout_below="@+id/checkboxB"
+                    android:freezesText="true"
+                    android:saveEnabled="true"/>
                 <CheckBox
                     android:id="@+id/checkboxD"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Answer D"
-                    android:layout_below="@+id/checkboxC"/>
+                    android:layout_below="@+id/checkboxC"
+                    android:freezesText="true"
+                    android:saveEnabled="true"/>
                 <CheckBox
                     android:id="@+id/checkboxE"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Answer E"
-                    android:layout_below="@+id/checkboxD"/>
+                    android:layout_below="@+id/checkboxD"
+                    android:freezesText="true"
+                    android:saveEnabled="true"/>
                 <CheckBox
                     android:id="@+id/checkboxF"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Answer F"
-                    android:layout_below="@+id/checkboxE"/>
+                    android:layout_below="@+id/checkboxE"
+                    android:freezesText="true"
+                    android:saveEnabled="true"/>
                 <CheckBox
                     android:id="@+id/checkboxG"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Answer G"
-                    android:layout_below="@+id/checkboxF"/>
+                    android:layout_below="@+id/checkboxF"
+                    android:freezesText="true"
+                    android:saveEnabled="true"/>
                 <CheckBox
                     android:id="@+id/checkboxH"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Answer H"
-                    android:layout_below="@+id/checkboxG"/>
+                    android:layout_below="@+id/checkboxG"
+                    android:freezesText="true"
+                    android:saveEnabled="true"/>
                 <CheckBox
                     android:id="@+id/checkboxI"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Answer I"
-                    android:layout_below="@+id/checkboxH"/>
+                    android:layout_below="@+id/checkboxH"
+                    android:freezesText="true"
+                    android:saveEnabled="true"/>
                 <CheckBox
                     android:id="@+id/checkboxJ"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Answer J"
-                    android:layout_below="@+id/checkboxI"/>
+                    android:layout_below="@+id/checkboxI"
+                    android:freezesText="true"
+                    android:saveEnabled="true"/>
             </RelativeLayout>
             <RelativeLayout
                 android:id="@+id/layout_text_answer"
